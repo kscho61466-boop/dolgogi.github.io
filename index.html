@@ -1,11 +1,1194 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <title>My First Vibe Page</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한국내수면양식클리닉</title>
+  <style>
+    :root {
+      --primary-navy: #0a2342;
+      --accent-blue: #0056b3;
+      --gold: #c5a059;
+      --naver-green: #2db400;
+      --youtube-red: #ff0000;
+      --bg-gradient: linear-gradient(135deg, #f8f9fc 0%, #e2e8f0 100%);
+      --white: #ffffff;
+      --text-main: #2d3436;
+      --shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-gradient);
+    }
+
+    header {
+      background: var(--primary-navy); color: white; padding: 15px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;
+    }
+
+    .logo-area { display: flex; flex-direction: column; cursor: pointer; }
+    .logo-area h1 { margin: 0; font-size: 1.6rem; font-weight: 550; }
+    .logo-area span { font-size: 0.85rem; color: var(--gold); font-weight: 500; }
+
+    .header-sns { display: flex; gap: 10px; }
+   /* SNS 버튼 기본 스타일 및 플랫폼 색상 적용 */
+    .official-btn {
+      text-decoration: none; color: white; font-size: 1.0rem; font-weight: 400;
+      padding: 8px 16px; border-radius: 6px; display: flex; align-items: center;
+      gap: 8px; transition: 0.3s; border: none; /* 테두리 제거로 더 깔끔하게 */
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    /* 네이버 블로그: 브랜드 그린 적용 */
+    .official-btn.blog {
+      background-color: var(--naver-green);
+    }
+    .official-btn.blog:hover {
+      background-color: #249600; /* 호버 시 약간 더 어둡게 */
+      transform: translateY(-2px);
+    }
+
+    /* 유튜브 채널: 브랜드 레드 적용 */
+    .official-btn.yt {
+      background-color: var(--youtube-red);
+    }
+    .official-btn.yt:hover {
+      background-color: #ce0000; /* 호버 시 약간 더 어둡게 */
+      transform: translateY(-2px);
+    }
+
+    .hero-banner {
+      /* 배경 이미지를 삭제하고 깔끔한 단색(light Navy)으로 변경 */
+      background: var(--primary-navy); 
+      
+      /* 상하 여백을 조절하여 크기 최적화 */
+      padding: 10px 20px; 
+      text-align: center; 
+      color: white;
+      
+      /* 불필요한 배경 글자나 로고가 섞이지 않도록 위치 속성 정리 */
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner h2 {
+      font-size: 3.3rem;
+      margin-bottom: 20px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1.2;
+      /* 단색 배경에서 글자가 더 돋보이도록 그림자 유지 */
+      text-shadow: 2px 4px 10px rgba(0,0,0,0.3); 
+      background: linear-gradient(135deg, #ffffff 50%, #e5c07b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* 제목 아래 골드 라인 (선택 사항) */
+    .title-underline {
+      width: 950px;
+      height: 4px;
+      background: var(--gold);
+      margin: 30px auto;
+      border-radius: 5px;
+    }
+
+    /* 반응형 처리: 화면이 작아지면 글자 크기 조절 */
+    @media (max-width: 768px) {
+      .hero-banner h2 { font-size: 2.2rem; }
+      .title-underline { width: 180px; }
+    }
+    .main-container { max-width: 1200px; margin: 60px auto 80px; padding: 0 20px; }
+
+    .dashboard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+    .main-card {
+      background: var(--white); border-radius: 12px; padding: 30px 25px;
+      text-align: center; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.05);
+      transition: 0.3s; cursor: pointer; display: flex; flex-direction: column;
+    }
+
+    .main-card:hover { transform: translateY(-5px); border-color: var(--accent-blue); }
+    .icon-box { font-size: 5.2rem; margin-bottom: 15px; display: block; }
+    .main-card h3 { color: var(--primary-navy); margin: 0 0 10px 0; font-size: 1.5rem; }
+    .main-card p { font-size: 1.2rem; color: #636e72; margin-bottom: 20px; line-height: 1.4; flex-grow: 1; }
+
+    .sub-nav { display: none; margin-top: 15px; border-top: 2px solid #f1f4f9; padding-top: 15px; text-align: left; animation: fadeIn 0.4s ease; }
+
+    .button-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+    .nav-pill {
+      display: block; padding: 10px 5px; background: #f8fafc; border-radius: 4px;
+      color: var(--text-main); text-decoration: none; font-size: 1.0rem; font-weight: 600;
+      text-align: center; transition: 0.2s; border: 1px solid #e2e8f0;
+    }
+
+    .nav-pill:hover { background: var(--primary-navy); color: white; border-color: var(--primary-navy); }
+
+    #detail-modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center;
+    }
+    .modal-body { background: white; width: 90%; max-width: 600px; padding: 40px; border-radius: 12px; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    @media (max-width: 950px) { .dashboard-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 650px) { .dashboard-grid { grid-template-columns: 1fr; } }
+/* 2차 하위 버튼 전용 스타일 */
+.deep-nav {
+  display: none;
+  margin-top: 10px;
+  padding: 10px;
+  background: #f1f5f9; /* 연한 회색 배경 */
+  border-radius: 8px;
+  grid-template-columns: repeat(2, 1fr); /* 2열로 배치 */
+  gap: 5px;
+  grid-column: span 2; /* 부모 그리드 전체 너비 사용 */
+  animation: fadeIn 0.3s ease;
+}
+.deep-pill {
+  display: block;
+  padding: 8px 5px;
+  background: white;
+  border-radius: 4px;
+  color: var(--primary-navy);
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid #cbd5e0;
+  text-align: center;
+}
+.deep-pill:hover {
+  background: var(--gold);
+  color: white;
+  border-color: var(--gold);
+}
+/* 보조 영문 문구 대폭 강조 */
+    .hero-banner .sub-text {
+      font-size: 1.6rem;          /* 크기를 기존보다 2배 이상 확대 */
+      font-weight: 800;           /* 아주 두껍게 설정 */
+      letter-spacing: 6px;        /* 글자 사이 간격을 넓혀 고급스러운 느낌 강조 */
+      color: var(--gold);         /* 포인트 컬러인 황금색 적용 */
+      text-transform: uppercase;  /* 모든 글자를 대문자로 고정 */
+      margin-bottom: 25px;        /* 메인 한글 제목과의 간격 확보 */
+      display: block;             /* 한 줄을 확실하게 차지하도록 설정 */
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.5); /* 가독성을 위한 그림자 */
+      animation: fadeInDown 1s ease-out; /* 위에서 아래로 스르륵 나타나는 효과 */
+    }
+
+    /* 등장 애니메이션 추가 */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>안녕하세요!</h1>
-  <p>이건 내가 느낌대로 만든 웹페이지 😊</p>
-</body>
-</html>
+
+<header>
+  <div class="logo-area" onclick="location.reload()">
+    <h1>한국내수면양식클리닉</h1>
+    <span>Korea Inland Aquaculture Clinic(KIAC)</span>
+  </div>
+  <div class="header-sns">
+    <a href="https://blog.naver.com/119fishdoctor" target="_blank" class="official-btn blog">NAVER BLOG</a>
+    <a href="https://www.youtube.com/channel/UCZ1zHXEHeLDrKUybkyQ7aww" target="_blank" class="official-btn yt">YOUTUBE</a>
+  </div>
+</header>
+
+<section class="hero-banner">
+  <p class="sub-text">Advanced Inland Aquaculture System</p>
+
+ <h2>내수면 질병 진단 및 양식 기술 정보 서비스</h2>
+<div class="title-underline"></div>
+
+</section>
+<div class="main-container">
+  <div class="dashboard-grid">
+    
+    <div class="main-card" onclick="toggleSub('m-fish')">
+      <span class="icon-box">🐟</span>
+      <h3>양식어류 질병</h3>
+      <p>주요 양식 어종의 병리 분석 및    진단 가이드라인</p>
+      <div id="m-fish" class="sub-nav">
+        <div class="button-grid">
+          <div style="grid-column: span 2;">
+  <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'trout-sub')">무지개송어 ▼</a>
+  <div id="trout-sub" class="deep-nav">
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('무지개송어: 세균성냉수병')">세균성냉수병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('무지개송어: 백점충병')">백점충병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('무지개송어: 절창병')">절창병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('무지개송어: 트리코디나병')">트리코디나병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('무지개송어: IHN')">IHN</a>
+  </div>
+</div>
+
+<div style="grid-column: span 2;">
+  <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'catfish-sub')">메기 ▼</a>
+  <div id="catfish-sub" class="deep-nav">
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('메기: 에드워드병(ESC)')">에드워드병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('메기: 콜룸나리스병')">콜룸나리스병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('메기: 운동성 에로모나스패혈증(MAS)')">운동성 에로모나스패혈증</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('메기: 백점충병')">백점충병</a>
+  </div>
+</div>
+<div style="grid-column: span 2;">
+  <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'carp-sub')">잉어 ▼</a>
+  <div id="carp-sub" class="deep-nav">
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('잉어: 솔방울병')">솔방울병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('잉어: 잉어봄바이러스병(SVC)')">SVC</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('잉어: 닻벌레병')">닻벌레병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('잉어: 아가미부식병')">아가미부식병</a>
+  </div>
+</div>
+
+<div style="grid-column: span 2;">
+  <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'f-carp-sub')">붕어 ▼</a>
+  <div id="f-carp-sub" class="deep-nav">
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('붕어: 에로모나스병')">에로모나스병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('붕어: 아가미흡충병')">아가미흡충병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('붕어: 물이병')">물이병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('붕어: 슈도모나스병')">슈도모나스병</a>
+  </div>
+</div>
+
+<div style="grid-column: span 2;">
+  <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'eel-sub')">뱀장어 ▼</a>
+  <div id="eel-sub" class="deep-nav">
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('뱀장어: 에드워드병')">에드워드병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('뱀장어: 아가미흡충병')">아가미흡충병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('뱀장어: 적점병')">적점병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('뱀장어: 세균성궤양병')">세균성궤양병</a>
+  </div>
+</div>
+
+<div style="grid-column: span 2;">
+  <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'bagrid-sub')">동자개 ▼</a>
+  <div id="bagrid-sub" class="deep-nav">
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('동자개: 세균성 패혈증')">세균성 패혈증</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('동자개: 에드워드 감염증')">에드워드 감염증</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('동자개: 아가미흡충병')">아가미흡충병</a>
+    <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('동자개: 트리코디나병')">트리코디나병</a>
+  </div>
+</div>
+
+<div style="grid-column: span 2;">
+        <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'mandarin-sub')">쏘가리 ▼</a>
+        <div id="mandarin-sub" class="deep-nav">
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('쏘가리: 이리도바이러스병')">이리도바이러스병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('쏘가리: 킬로도넬라병')">킬로도넬라병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('쏘가리: 에로모나스병')">에로모나스병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('쏘가리: 아가미흡충병')">아가미흡충병</a>
+        </div>
+      </div>
+    </div> </div> </div> <div class="main-card" onclick="toggleSub('o-fish')">
+  <span class="icon-box">✨</span>
+  <h3>관상어류 질병</h3>
+  <p>고부가가치 관상어종의 질병 관리</p>
+  <div id="o-fish" class="sub-nav">
+    <div class="button-grid">
+      
+      <div style="grid-column: span 2;">
+        <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'goldfish-sub')">금붕어 ▼</a>
+        <div id="goldfish-sub" class="deep-nav">
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('금붕어: 부레병')">부레병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('금붕어: 솔방울병')">솔방울병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('금붕어: 안구돌출증')">안구돌출</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('금붕어: 백점병')">백점병</a>
+        </div>
+      </div>
+
+      <div style="grid-column: span 2;">
+        <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'koi-sub')">비단잉어 ▼</a>
+        <div id="koi-sub" class="deep-nav">
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('비단잉어: 잉어헤르페스병(KHV)')">잉어헤르페스병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('비단잉어: 아가미부식병')">아가미부식병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('비단잉어: 코이슬리피병')">코이슬리피병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('비단잉어: 닻벌레병')">닻벌레병</a>
+        </div>
+      </div>
+
+      <div style="grid-column: span 2;">
+        <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'tropical-sub')">열대어 ▼</a>
+        <div id="tropical-sub" class="deep-nav">
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('열대어: 칼럼나리스병')">칼럼나리스병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('열대어: 구피배마름병')">배마름병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('열대어: 오디늄병')">오디늄병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('열대어: 꼬리녹음병')">꼬리녹음병</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="main-card" onclick="toggleSub('w-quality')">
+      <span class="icon-box">💧</span>
+      <h3>수질 관리</h3>
+      <p>실시간 수질 데이터 분석 및 항목별 관리 최적화</p>
+      <div id="w-quality" class="sub-nav">
+        <div class="button-grid">
+          
+          <div style="grid-column: span 2;">
+            <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'param-sub')">주요 수질항목 ▼</a>
+            <div id="param-sub" class="deep-nav">
+              <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('수질: 용존산소(DO)')">용존산소(DO)</a>
+              <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('수질: 암모니아(NH3)')">암모니아(NH3)</a>
+              <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('수질: 아질산(NO2)')">아질산(NO2)</a>
+              <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('수질: 수소이온농도(pH)')">수소이온농도(pH)</a>
+            </div>
+          </div>
+
+          <div style="grid-column: span 2;">
+            <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'practice-sub')">수질관리 실무 ▼</a>
+            <div id="practice-sub" class="deep-nav">
+              <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('실무: 환수 전략')">환수 전략</a>
+              <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('실무: 여과기 관리')">여과기 관리</a>
+              <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('실무: 사료량 조절')">사료량 조절</a>
+              <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('실무: 긴급 대응')">긴급 대응</a>
+            </div>
+          </div>
+    </div>
+  </div>
+</div>    <div class="main-card" onclick="toggleSub('g-breeding')">
+  <span class="icon-box">🧬</span>
+  <h3>수산용의약품</h3>
+  <p>수산용의약품은 어류질병 치료와 예방의 핵심 도구</p>
+  <div id="g-breeding" class="sub-nav">
+    <div class="button-grid">
+      
+      <div style="grid-column: span 2;">
+        <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'select-sub')">수산용의약품 ▼</a>
+        <div id="select-sub" class="deep-nav">
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('수산용의약품: 항생제')">항생제</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('수산용의약품: 항기생충제')">항기생충제</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('수산용의약품: 항진균제')">항진균제</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('수산용의약품: 소독제')">소독제</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('수산용의약품: 백신')">백신</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('수산용의약품: 면역증강제·보조제')">면역증강제·보조제</a>
+        </div>
+      </div>
+
+      <div style="grid-column: span 2;">
+        <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'tech-sub')">약품 투여방법 ▼</a>
+        <div id="tech-sub" class="deep-nav">
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('약품투여: 경구투여법')">경구투여법</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('약품투여: 약욕법')">약욕법</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('약품투여: 주사법')">주사법</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  <div class="main-card" onclick="toggleSub('field-test')">
+  <span class="icon-box">🔬</span>
+  <h3>현장검사 시스템</h3>
+  <p>신속 진단키트 및 현장 병리검사 프로토콜</p>
+  <div id="field-test" class="sub-nav">
+    <div class="button-grid">
+      
+      <div style="grid-column: span 2;">
+        <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'rapid-sub')">신속 현장진단 기술 ▼</a>
+        <div id="rapid-sub" class="deep-nav">
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('검사: 사육실태 점검')">사육실태 점검</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('검사: 현미경 검경')">현미경검사</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('검사: 수질검사')">수질검사</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('검사: 신속진단키트(LFT)')">신속진단키트(LFT)</a>
+
+        </div>
+      </div>
+
+      <div style="grid-column: span 2;">
+        <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'safety-sub')">샘플 및 방역관리 ▼</a>
+        <div id="safety-sub" class="deep-nav">
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('검사: 샘플 채취 및 보존')">샘플 채취/보존</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('검사: 소독 프로토콜')">소독 프로토콜</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('검사: 법정전염병 신고')">법정전염병 신고</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="main-card" onclick="toggleSub('f-cases')">
+  <span class="icon-box">📋</span>
+  <h3>현장사례</h3>
+  <p>양식 현장 질병 발생 리포트 및 우수 극복 사례 공유</p>
+  <div id="f-cases" class="sub-nav">
+    <div class="button-grid">
+      <div style="grid-column: span 2;">
+        <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'case-disease-sub')">질병 대응 사례 ▼</a>
+        <div id="case-disease-sub" class="deep-nav">
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('사례: 메기 에드워드병 조기진단')">메기 에드워드병</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('사례: 송어 IHN 확산 방지')">송어 IHN 방역</a>
+        </div>
+      </div>
+      
+      <div style="grid-column: span 2;">
+        <a href="javascript:void(0)" class="nav-pill" onclick="toggleDeep(event, 'case-water-sub')">수질 사고 사례 ▼</a>
+        <div id="case-water-sub" class="deep-nav">
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('사례: 고수온기 산소 부족 대응')">여름 산소 부족</a>
+          <a href="javascript:void(0)" class="deep-pill" onclick="openInfo('사례: RAS 아질산 수치 폭등 해결')">RAS 아질산 폭등</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="detail-modal">
+  <div class="modal-body">
+    <div id="modal-content"></div>
+    <button onclick="closeInfo()" style="margin-top:25px; padding:12px 30px; cursor:pointer; background:var(--primary-navy); color:white; border:none; border-radius:4px; font-weight:bold; width:100%;">확인 후 창 닫기</button>
+  </div>
+</div>
+
+<script>
+  // 1. 메인 카드 토글 (양식어류 질병 등)
+  function toggleSub(id) {
+    event.stopPropagation();
+    const target = document.getElementById(id);
+    const isOpen = target.style.display === 'block';
+    
+    // 모든 1차, 2차 메뉴 초기화
+    document.querySelectorAll('.sub-nav').forEach(nav => nav.style.display = 'none');
+    document.querySelectorAll('.deep-nav').forEach(nav => nav.style.display = 'none');
+    
+    if (!isOpen) target.style.display = 'block';
+  }
+
+  // 2. 2차 상세 메뉴 토글 (무지개송어 등)
+  function toggleDeep(event, deepId) {
+  event.stopPropagation(); // 부모 카드가 닫히는 것을 방지
+  const deepTarget = document.getElementById(deepId);
+  
+  if (!deepTarget) return; // ID가 없으면 중단
+
+  const isOpen = deepTarget.style.display === 'grid';
+  
+  // 다른 모든 열려있는 하위 메뉴를 닫음
+  document.querySelectorAll('.deep-nav').forEach(nav => nav.style.display = 'none');
+  
+  // 클릭한 것만 열기
+  if (!isOpen) deepTarget.style.display = 'grid';
+}
+
+// 3. 상세 정보 데이터베이스 (무지개송어 + 메기 통합)
+  const diseaseData = {
+    "무지개송어: 세균성냉수병": {
+      summary: "저수온 담수환경에서 발생하는 그람음성 세균인 Flavobacterium psychrophilium에 의한 세균성 냉수병(BCWD)입니다.",
+      intro: "수온 10–15℃ 이하의 저수온 환경에서 주로 치어(50g 이하)에 치명적인 세균감염병을 유발하는 병입니다. 고밀도 사육에서 유기물 축적, 사육수 혼탁이 보이며 사육 환경이 나쁠 때 잘 생깁니다.",
+      condition: "<ul><li>물이 탁하고 찌꺼기가 많을 때</li><li>사육밀도가 높을 때</li><li>산소가 부족하거나 수질이 불안정할 때</li><li>치어 단계에서 특히 잘 생김</li><li>RAS에서 고형물 관리 안 되면 급격히 발생 가능</li></ul>",
+      appearance: "<ul><li>등지느러미 기저부 궤양, 지느러미 부식</li><li>사료 반응 저하, 무기력, 군영이탈 </li><li>척추기형, 심하면 폐사 증가</li></ul>",
+      checkup: "✔ <b>물 상태:</b> 탁도, 찌꺼기, 산소량 확인<br>✔ <b>행동:</b> 수면 위 체류, 폐사 개체 증가 확인<br>✔ <b>현미경:</b> 점액 과다 후 표면 거칠어짐 확인",
+      treatment: "<b>1순위: 환경 개선 (찌꺼기 관리, 사육밀도 하향)</b><br><b>2순위: 항생제 경구투여 및 약욕</b> (옥시테트라사이클린, 플로르페니콜 등 / 산소공급 필수)<br><b></b>",
+      final: "수질오염 관리 + 산소 안정 + 항생제 처리가 핵심입니다."
+    },
+    "무지개송어: 백점충병": {
+      summary: "백점충병은 담수 어류에서 가장 흔한 원충성 외부기생충 질병으로, 체표와 아가미에 백색 결절성 병변을 형성하여 호흡장애와 스트레스를 유발한다.",
+      intro: "백점충(Ichthyophthirius multifiliis)이 피부와 아가미에 기생하여 발생하는 대표적인 외부기생충 질병입니다.",
+      condition: "<ul><li>수온 14~18°C 및 밀식일때 </li><li>지하수에서 백점충 유입 시</li></ul>",
+      appearance: "<ul><li>몸 표면에 작은 흰 점</li><li>바닥이나 벽면에 몸을 비비는 행동 등</li></ul>",
+      checkup: "육안 관찰 및 피부, 아가미에서 현미경 검사",
+      treatment: "수산용포르말린으로 주기적 약욕",
+      final: "전염 속도가 매우 빠르니 초기 대응 필수!"
+    },
+    "무지개송어: 절창병": {
+      summary: "피부에 종기가 형성되고 근육 괴사가 동반되는 세균성 질병",
+      intro: "절창병은 Aeromonas salmonicida에 의해 발생하는 전신성 세균 감염병으로, 피부와 근육에 염증성 종기(furuncle)를 형성합니다.",
+      condition: "<ul><li>수온 상승기</li><li>사육 밀도가 높을 때</li></ul>",
+      appearance: "<ul><li>붉은 종기(절창) 형성 및 근육괴사</li><li>항문 및 지느러미 출혈</li></ul>",
+      checkup: "외관 궤양 확인, 병변 부위 세균 분리, 세균동정",
+      treatment: "영양강화, 항생제 사료 투여 및 시설소독 강화",
+      final: "발생 즉시 격리 및 항생제 처방 필요!"
+    },
+    "무지개송어: 트리코디나병": {
+      summary: "원충 기생으로 인한 체표 자극과 아가미 손상에 따라 가려움 및 호흡 장애가 나타나는 질병",
+      intro: "트리코디나병은 원반형 섬모충인 Trichodina spp.가 피부와 아가미 상피에 부착하여 기계적 자극과 손상을 유발하는 외부기생충성 질병입니다.",
+      condition: "<ul><li>유기물축적 및 수질오염 환경</li><li>바닥 청소 미흡으로 배설물, 잔사료가 축적된 경우</li><li>사육 밀도 증가 및 용존산소 부족</li></ul>",
+      appearance: "<ul><li>바닥이나 벽면에 몸을 비비는 행동</li><li>피부 점액 과다 분비로 체표가 뿌옇게 관찰됨</li><li>아가미에 기생 시 호흡 곤란, 수면 근처에서 유영</li></ul>",
+      checkup: "<strong>1. 행동 확인:</strong> 몸 비비는 현상 및 무기력증 관찰<br><strong>2. 현미경 검사:</strong> 피부나 아가미 점액을 채취하여 회전하는 원반 모양의 원충 확인",
+      treatment: "<strong>1) 환경 개선:</strong> 사육수 교체 및 바닥 찌꺼기 제거(청소)가 필수<br><strong>2) 약욕 치료:</strong> 수산용 포르말린(100-200ppm) 약욕 실시<br><strong>3) 보조 조치:</strong> 충분한 산소 공급 유지",
+      final: "사육지 청소와 유기물 제거가 치료의 절반입니다!"
+    },
+    "무지개송어: IHN": {
+      summary: "무지개송어 치어에서 폐사율이 매우 높은 치명적인 바이러스 질병",
+      intro: "전염성 조혈기 괴사증(Infectious Hematopoietic Necrosis, IHN)으로, 무지개송어 치어에 주로 발생하는 급성 전염성 바이러스성 질병입니다.",
+      condition: "<ul><li>수온 8~12℃ 내외의 저수온기(봄, 가을)에 주로 발생</li><li>감염된 어미의 알을 통해 수직 감염</li><li>오염된 사육수나 도구를 통한 수평 전파</li></ul>",
+      appearance: "<ul><li>안구가 돌출되거나 복부가 팽만해짐</li><li>가슴지느러미 기부에 출혈이 보임</li><li>실 모양의 긴 배변을 매달고 있거나 척추 휘어짐 관찰</li></ul>",
+      checkup: "<strong>1. 외부 증상:</strong> 안구 돌출 및 지느러미 출혈 확인<br><strong>2. 정밀 검사:</strong> 전문 분석기관에 의뢰하여 PCR 등 유전자 검사법으로 확진 필요",
+      treatment: "<strong>1) 치료 방법:</strong> 바이러스 질병이므로 현재까지 유효한 치료제가 없음<br><strong>2) 차단 방역:</strong> 알 소독(요오드제) 철저 및 유입수 소독<br><strong>3) 발생 시 조치:</strong> 폐사체 즉시 제거 및 이동 제한, 심한 경우 살처분 권고",
+      final: "바이러스는 치료보다 '유입 차단'과 '철저한 소독'이 유일한 대책입니다."
+    },
+    "메기: 에드워드병(ESC)": {
+      summary: "메기 양식에서 가장 피해가 큰 정수리 구멍을 형성하는 세균성 질병",
+      intro: "에드워드병은 Edwardsiella ictaluri균에 의해 발생하는 메기 종의 특이적인 세균성 질병으로 간과 신장에 치명적인 손상을 유발합니다.",
+      condition: "<ul><li>25°C 이상의 고수온기</li><li>사육 밀도가 높고 환수가 부족할 때</li><li>스트레스가 심한 장마철 전후 환경 급변 시</li></ul>",
+      appearance: "<ul><li>머리 윗부분에 구멍이 뚫리는 궤양(Hole-in-the-head)</li><li>복부 팽만 및 항문 주위 출혈</li><li>수면에서 힘없이 회전하거나 부유함</li></ul>",
+      checkup: "✔ <b>외관:</b> 머리 정수리의 하얀 반점이나 구멍 확인<br>✔ <b>내부:</b> 간에 하얀 점(결절) 존재 확인",
+      treatment: "<b>1. 항생제 투여:</b> 수산용 항생제(옥시테트라사이클린 등) 경구 투여<br><b>2. 수질 개선:</b> 급이량 감소 및 환수량 증가<br><b>3. 폐사체 관리:</b> 즉시 수거하여 감염 확산 방지",
+      final: "메기 머리에 구멍이 보이면 이미 중증이므로 빠른 발견과 투약이 핵심입니다."
+    },
+    "메기: 콜룸나리스병": {
+      summary: "피부와 지느러미 조직이 부식되듯 진행되는 급성 세균성 질병",
+      intro: "Flavobacterium columnare균이 아가미 또는 피부 상처를 통해 침입하여 조직 괴사를 유발하는 병입니다.",
+      condition: "<ul><li>선별이나 이동 등 취급과정 중 체표 손상 발생 시</li><li>수온 급변 또는 사육수 내 유기물 부하 증가 시</li></ul>",
+      appearance: "<ul><li>입 주변이나 지느러미 끝이 희게 변하여 용해</li><li>체표에 황백색 점액성 병변 형성</li><li>아가미 부식으로 인한 호흡수 증가</li></ul>",
+      checkup: "✔ <b>육안:</b>아가미 및 지느러미 끝 조직 부식 확인<br>✔ <b>현미경:</b> 병변 부위에서 활주하는 막대형 세균 관찰",
+      treatment: "<b>1. 약욕:</b> 항생제(옥시테트라사이클린) 약욕<br><b>2. 상처 예방:</b> 선별 시 부드러운 뜰채 사용 및 스트레스 최소화<br><b>3. 환경 관리:</b> 사육수 내 유기물 부하 저감",
+      final: "피부 상처가 감염 경로, 조기발견으로 피해 최소화 필요합니다."
+    },
+    "메기: 운동성 에로모나스패혈증(MAS)": {
+      summary: "전신 출혈을 일으키는 급성 패혈증",
+      intro: "Aeromonas hydrophila균에 의해 발생하며, 면역력이 약해진 물고기에게 급성으로 번지는 세균성 질환입니다.",
+      condition: "<ul><li>봄철 수온 상승기 및 환절기</li><li>용존 산소 부족 또는 갑작스러운 수질 변화 시</li><li>기생충 감염 등으로 면역력이 저하되었을 때</li></ul>",
+      appearance: "<ul><li>배 부위, 지느러미 기부 등에 붉은 반점(출혈)</li><li>안구 돌출 및 복수로 인한 복부 팽창</li><li>항문 주위가 붉게 부어오름</li></ul>",
+      checkup: "✔ <b>증상:</b> 전신 출혈성 반점과 안구 돌출 확인<br>✔ <b>내부:</b> 해부 시 장관 내 혈액성 액체 및 가스 확인",
+      treatment: "<b>1. 환경 안정:</b> 충분한 산소 공급과 신속한 환수<br><b>2. 약제 처방:</b> 감수성 테스트를 거친 적절한 수산용 항생제 투여<br><b>3. 보조 처방:</b> 면역 강화를 위한 영양 보충",
+      final: "환경 스트레스가 주원인이므로 물 상태 개선을 우선적으로 실시해야 합니다."
+    },
+    "메기: 백점충병": {
+      summary: "체표에 흰색 반점이 나타나는 듯한 모습의 기생충성 질병",
+      intro: "백점충병은 기생 원충 Ichthyophthirius multifiliis가 피부와 아가미 상피 내에 침투하여 발생하는 대표적인 외부기생충성 질병으로, 전염성이 매우 강합니다.",
+      condition: "<ul><li>일교차 증가로 수온이 불안정한 환경</li><li>검역되지 않은 외부 개체의 신규 입식</li></ul>",
+      appearance: "<ul><li>지느러미 및 체표에 아주 작은 흰색 점들이 다수 관찰</li><li>가려움으로 바닥, 벽면에 몸을 비비는 행동</li><li>호흡 곤란 및 활역 저하</li></ul>",
+      checkup: "✔ <b>육안:</b> 체표의 전형적인 흰색 반점 확인<br>✔ <b>현미경:</b> 말굽 모양의 핵을 가진 둥근 원충 확인",
+      treatment: "<b>1. 수온 관리:</b> 수온을 28~30°C로 서서히 올리면 기생충 탈락에 도움<br><b>2. 약욕 처리:</b> 수산용 포르말린 약욕 반복 실시<br><b>3. 청소 관리:</b> 바닥 환수로 탈락 포자 제거",
+      final: "백점충은 피부 조직 내에 기생하므로, 3일 간격으로 여러 번 치료해야 합니다."
+  },
+"잉어: 솔방울병": {
+      summary: "체액 저류로 비늘이 서고 전신 부종이 나타나는 전형적인 세균성 패혈증",
+      intro: "솔방울병은 Aeromonas spp. 등의 세균 감염으로 체내 삼투 조절 기능이 저하되면서 체액이 축적되어 비늘이 솔방울처럼 일어나는 전신성 질병입니다.",
+      condition: "<ul><li>수온 상승기 및 환절기 스트레스 누적 시</li><li>사육 환경 악화로 암모니아 등 유해 수질인자가 증가한 경우</li></ul>",
+      appearance: "<ul><li>비늘 기립 상태와 복부 팽창 여부이 거칠게 서며 전신 팽만</li><li>안구 돌출 및 지느러미 기부 충혈</li></ul>",
+      checkup: "✔ <b>육안:</b> 비늘의 기립 상태와 복부 팽창 여부 확인<br>✔ <b>행동:</b> 사료 섭취가 급감하고, 수면 근처에서 정지 여부 확인",
+      treatment: "<b>1. 환경:</b> 즉각적인 환수 및 사육 밀도 조절<br><b>2. 약제:</b> 수산용 항생제 사료 혼합 급이 및 약욕 병행",
+      final: "비늘 기립은 말기 징후에 해당하므로, 조기 발견과 수질환경 개선이 최우선입니다."
+    },
+    "잉어: 잉어봄바이러스병(SVC)": {
+      summary: "잉어류에서 대량 폐사를 유발하는 고취험 바이러스성 전염병",
+      intro: "봄철 수온 상승기에 발생하는 잉어봄바이러스병(Spring Viremia of Carp, SVC). 제1종 법정 전염병으로, 전염력이 매우 강합니다.",
+      condition: "<ul><li>수온 10~17°C의 이른 봄철</li><li>감염된 어류와의 접촉이나 오염된 도구 유입 시</li></ul>",
+      appearance: "<ul><li>체색이 어두워지고 복부가 심하게 부풀어 오름</li><li>피부 및 장기 전체에 점상 출혈 확인</li><li>외부 개체 무검역 입식</li></ul>",
+      checkup: "✔ <b>외부:</b> 복부 팽만 및 안구 돌출 확인<br>✔ <b>정밀진단:</b> 의심 증상 시 즉시 관계 기관 신고 및 정밀 검사 실시",
+      treatment: "<b>1. 대응원칙:</b> 치료법 없음 (발생 시 살처분 및 이동 제한 권고)<br><b>2. 차단방역:</b> 유입수 소독 및 외부 개체 반입 시 철저한 검역",
+      final: "바이러스성 질병은 예방과 차단 방역만이 유일한 해결책입니다."
+    },
+    "잉어: 닻벌레병": {
+      summary: "체표에 닻 모양의 기생 갑각류가 부착되어 영양을 흡수하고 상처를 유발하는 외부기생충 질병",
+      intro: "닻벌레병은 닻벌레(Lernaea spp.)가 잉어의 피부와 근육층에 두부(닻 모양)를 깊게 박고 기생하여 조직 손상과 염증 반응을 일으키는 질병입니다.",
+      condition: "<ul><li>여름철 고수온기 외부 개체 유입 시</li><li>수류 정체 및 유기물 축적으로 수질이 악화된 환경</li></ul>",
+      appearance: "<ul><li>체표에 0.5~1cm 내외의 실 모양의 기생충 부착</li><li>기생 부위의 발적, 부종 또는 궤양 형성</li><li>심한 경우 2차 세균 감염 동반</li></ul>",
+      checkup: "✔ <b>육안검사:</b> 체표를 관찰하여 부착된 기생충 성체 확인",
+      treatment: "<b>1. 약제:</b> 기생충 전용 구충제(트리클로프폰 등) 살포<br><b>2. 소독 관리:</b> 상처 부위 2차 세균 감염 방지를 위한 소독",
+      final: "눈에 보이는 기생충 개체만 떼어내지 말고 수조 전체에 구충제를 살포해야 합니다."
+    },
+    "잉어: 아가미부식병": {
+      summary: "세균 감염으로 아가미 조직이 파괴되어 호흡 장애를 유발하는 질병",
+      intro: "아가미부식병은 Flavobacterium spp. 등 세균에 의해 아가미 상피와 새엽 조직이 침식·괴사되면서 질식과 폐사를 유발하는 외부 세균성 질병입니다.",
+      condition: "<ul><li>사육수가 오염되고 부유 물질이 많을 때</li><li>수온이 급격히 상승하는 시기</li></ul>",
+      appearance: "<ul><li>아가미 새엽 말단이 희게 변하며 마모, 부식</li><li>호흡수 증가, 수면 부상 및 헐떡거림</li></ul>",
+      checkup: "✔ <b>현미경:</b> 아가미 점액에서 길고 가는 막대 모양의 세균 확인",
+      treatment: "<b>1. 환경:</b> 물리적 여과 강화 및 환수 실시<br><b>2. 약욕:</b> 수산용 항생제 약욕 처리",
+      final: "아가미 손상은 회복이 어려우므로 사전에 수질 청결을 유지해야 합니다."
+    },
+    "붕어: 에로모나스병": {
+      summary: "체표 조직이 괴사되어 깊은 궤양이 형성되는 대표적인 세균성 감염 질병",
+      intro: "에로모나스병은 Aeromonas spp. 감염으로 인해 피부와 근육 조직이 괴사·붕괴되면서 근육이 노출되는 세균성 질병으로, 붕어에서 흔히 관찰됩니다.",
+      condition: "<ul><li>수질 악화 또는 선별, 이동과정 중 체표 손상 발생 시</li><li>환절기 스트레스 누적으로 면역력이 저하된 성어 단계</li></ul>",
+      appearance: "<ul><li>비늘 탈락과 함께 붉은 발적 및 원형 궤양 형성</li><li>병변이 진행되면 깊은 조직 결손 부위 직접 확인</li></ul>",
+      checkup: "✔ <b>외관:</b> 체표의 붉은 발적, 궤양 및 조직 결손 부위 직접 확인",
+      treatment: "<b>1. 약욕:</b> 소금욕 또는 수산용 항생제 경구투여<br><b>2. 투약:</b> 증상이 심할 경우 약욕도 병행",
+      final: "에로모나스병은 주로 수온 변동시기에 발생하며, 어체 취급 시 스트레스를 최소화해야 합니다."
+    },
+    "붕어: 아가미흡충병": {
+      summary: "아가미에 흡충이 기생하여 호흡 장애를 유발하는 외부기생충 질병",
+      intro: "아가미흡충병은 Dactylogyrus spp. 등이 아가미에 기생하여 아가미 상피 손상과 점액 과다 분비를 유발하는 외부기생충성 질병입니다..",
+      condition: "<ul><li>수온상승기 고밀도 사육 환경을 통해 전파</li><li>새로 입식하는 어류의 무검역 입식</li></ul>",
+      appearance: "<ul><li>호흡수 증가 및 수면 부상</li><li>아가미 색이 창백하거나 점액 과다분비</li></ul>",
+      checkup: "✔ <b>외부:</b> 아가미 점액과다 분비 확인<br>✔ <b>현미경 진단:</b> 아가미 점액에서 갈고리 구조를 가진 흡충 확인",
+      treatment: "<b>1. 대응:</b> 수산용 포르말린 약욕<br><b>2. 관리:</b> 폐사어 즉시 제거, 사육밀도 조절 및 검역 강화",
+      final: "아가미흡충은 조기에 구제하는 것이 중요하며, 반복 처리가 필요합니다.."
+    },
+   "붕어: 물이병": {
+  "summary": "흡혈성 갑각류 기생으로 피부 손상과 2차 감염을 유발하는 외부기생충 질병",
+  "intro": "물이병은 Argulus spp.(물이, 어류이)가 잉어의 체표와 지느러미에 부착하여 흡혈·흡즙하면서 기계적 자극과 염증을 일으키는 외부기생 갑각류성 질병이다.",
+  "condition": "<ul><li>수온이 상승하는 늦봄~여름철</li><li>외부 개체를 검역 없이 입식한 경우</li><li>정체 수역 또는 수질 관리가 미흡한 환경</li></ul>",
+  "appearance": "<ul><li>체표 또는 지느러미에 원반형 기생충이 부착되어 관찰됨</li><li>가려움으로 수조 벽면이나 바닥에 몸을 비비는 행동</li><li>부착 부위의 발적, 출혈 또는 궤양 형성</li></ul>",
+  "checkup": "✔ <b>육안 검사:</b> 체표에서 이동하는 원반형 기생충 확인<br>✔ <b>확인 방법:</b> 핀셋으로 제거 후 형태 관찰",
+  "treatment": "<b>1. 구충 처리:</b> 수산용 구충제(트리클로르폰 등)를 이용한 전 수조 약욕 또는 살포<br><b>2. 환경 관리:</b> 환수 강화 및 유기물 제거<br><b>3. 보조 관리:</b> 부착 부위 소독으로 2차 세균 감염 예방",
+  "final": "물이병은 개체 간 전파가 빠르므로, 보이는 개체만 제거하지 말고 반드시 수조 전체를 대상으로 구충 처리를 실시해야 한다."
+},
+   "붕어: 슈도모나스병": {
+  "summary": "저수온기 면역 저하 시 발생하는 세균성 패혈증 및 궤양성 질병",
+  "intro": "슈도모나스병은 Pseudomonas spp.에 의해 발생하는 세균성 질병으로, 붕어에서 수질 악화와 면역 저하가 동반될 경우 피부 궤양, 출혈 및 전신성 감염으로 진행될 수 있다.",
+  "condition": "<ul><li>저수온기 또는 환절기 면역력 저하 시</li><li>사육수 오염 및 암모니아·아질산 농도 증가</li><li>선별·이동 등으로 체표 상처가 발생한 경우</li></ul>",
+  "appearance": "<ul><li>체표에 국소적 발적 및 궤양 형성</li><li>지느러미 기부 및 복부의 출혈 반점</li><li>활력 저하와 섭이 감소</li></ul>",
+  "checkup": "✔ <b>외관 검사:</b> 피부 발적, 궤양 및 출혈 부위 확인<br>✔ <b>내부 소견:</b> 해부 시 간·신장 충혈 및 체강 내 삼출액 확인 가능",
+  "treatment": "<b>1. 환경 개선:</b> 즉각적인 환수와 여과 기능 점검<br><b>2. 약제 투여:</b> 감수성 시험에 근거한 수산용 항생제 경구 투여<br><b>3. 보조 관리:</b> 비타민·면역 강화제 보충 급이",
+  "final": "슈도모나스병은 환경성 질병의 성격이 강하므로, 항생제 사용 이전에 수질 개선과 스트레스 저감이 우선되어야 한다."
+},
+  "뱀장어: 에드워드병": {
+  "summary": "Edwardsiella tarda 감염에 의해 발생하는 장어의 대표적인 세균성 패혈증으로, 출혈·궤양·내부 장기 손상을 동반하며 폐사율이 높은 질병",
+  "intro": "Edward’s disease는 그람음성 간균인 Edwardsiella tarda에 의해 발생하는 세균성 질병으로, 장어 양식장에서 급성 또는 아급성으로 진행되는 패혈증 형태를 보인다. 수온 상승기와 스트레스 조건에서 발생이 증가하며, 적절한 대응이 없을 경우 집단 폐사로 이어질 수 있다.",
+  "condition": "<ul><li>수온이 20–28℃ 범위로 상승하는 시기</li><li>사육밀도 과다 및 취급 스트레스</li><li>유기물 축적, 용존산소 부족 등 불량한 수질 환경</li><li>외부 상처 또는 기생충 감염으로 피부 장벽이 손상된 경우</li></ul>",
+  "appearance": "<ul><li>체표 및 지느러미 기부의 출혈과 발적</li><li>체측 또는 복부에 궤양 형성</li><li>복부 팽만, 항문 발적</li><li>중증 개체에서 유영 둔화, 식욕 상실 및 급성 폐사</li></ul>",
+  "checkup": "✔ <b>육안 검사:</b> 체표 출혈, 궤양, 복부 팽만 여부 확인<br>✔ <b>내부 검사:</b> 간·비장 종대, 복강 내 출혈 및 장염 소견 확인<br>✔ <b>세균 검사:</b> 신장 또는 비장에서 세균 분리 후 Edwardsiella tarda 동정",
+  "treatment": "<b>1. 환경 관리:</b> 수질 개선 및 사육밀도 조절, 산소 공급 강화<br><b>2. 약물 치료:</b> 세균 분리 및 감수성 시험 결과에 따른 수산용 항생제 혼합사료를 5–10일간 투여<br><b>3. 위생 관리:</b> 폐사어 즉시 제거 및 사육 시설·도구 소독",
+  "final": "에드워드병은 진행 속도가 빠르고 폐사율이 높은 질병으로, 조기 진단과 즉각적인 항균 치료가 생존율을 좌우한다. 특히 수온 상승기에는 스트레스 관리와 수질 안정화를 통해 발생을 사전에 억제하는 것이 가장 효과적인 예방 전략이다."
+},
+   "뱀장어: 아가미흡충병": {
+  "summary": "아가미에 흡충이 기생하여 호흡 장애를 유발하는 외부기생충 질병",
+  "intro": "아가미흡충병은 Dactylogyrus spp. 등 단생흡충류가 뱀장어의 아가미에 기생하여 아가미 상피를 손상시키고 점액 과다 분비 및 가스 교환 장애를 일으키는 외부기생충성 질병이다.",
+  "condition": "<ul><li>고밀도 사육 환경</li><li>수온 상승기 및 수질 관리 미흡 시</li><li>외부 개체를 검역 없이 입식한 경우</li></ul>",
+  "appearance": "<ul><li>호흡수 증가 및 수면 근처에서 헐떡거림</li><li>아가미 색이 창백해지거나 점액 과다 분비</li><li>활력 저하 및 섭이 감소</li></ul>",
+  "checkup": "✔ <b>현미경 검사:</b> 아가미 점액 도말 후 갈고리 구조를 가진 흡충 확인<br>✔ <b>외관:</b> 호흡 곤란 및 아가미 상태 관찰",
+  "treatment": "<b>1. 구충 처리:</b> 수산용 구충제 약욕 또는 전 수조 처리<br><b>2. 환경 관리:</b> 사육 밀도 조절 및 환수 강화<br><b>3. 반복 관리:</b> 흡충 생활사를 고려한 반복 처리",
+  "final": "아가미흡충병은 초기 대응이 중요하며, 단회 처리보다는 반복 구충과 수질 관리가 치료 성공의 핵심이다."
+},
+   "뱀장어: 적점병": {
+  "summary": "Pseudomonas anguilliseptica에 의해 발생하는 세균성 패혈증으로, 체표에 특징적인 점상 출혈(red spots)을 유발하는 뱀장어의 대표적인 세균성 질병",
+  "intro": "뱀장어 적점병은 Pseudomonas anguilliseptica 감염에 의해 발생하는 출혈성 세균 질병으로, 주로 체표와 지느러미에 선명한 적색 점상 출혈이 관찰된다. 수온 상승기 및 염분이 혼입된 사육 환경에서 면역 저하와 함께 발생 위험이 증가한다.",
+  "condition": "<ul><li>수온이 25℃ 이상으로 상승하는 시기(주로 봄~초여름)</li><li>염분이 혼입된 사육수 또는 기수 환경</li><li>사육밀도 증가로 인한 만성 스트레스</li><li>유기물 축적 및 수질 관리 미흡</li></ul>",
+  "appearance": "<ul><li>복부 및 체측 피부에 바늘로 찌른 듯한 선명한 점상 출혈(petechial hemorrhage)</li><li>지느러미 기부의 충혈 및 발적, 말단부 마모</li><li>중증 개체에서 체표 점액 증가 및 활력 저하</li></ul>",
+  "checkup": "✔ <b>육안 검사:</b> 복부·체측 중심의 점상 출혈 분포 양상 확인<br>✔ <b>환경 점검:</b> 수온, 염분 혼입 여부, 사육밀도 및 유기물 상태 확인",
+  "treatment": "<b>1. 사육 환경:</b> 수온을 25–27℃ 범위에서 안정적으로 유지하고 급격한 변동을 방지<br><b>2. 위생 관리:</b> 폐사어 즉시 제거 및 저질·유기물 관리 강화<br><b>3. 약물 치료:</b> 항균제 사용 시 반드시 세균 분리 및 감수성 시험 후 수산용 항생제 적용",
+  "final": "뱀장어 적점병은 고수온과 염분 스트레스에 의해 유발되는 기회감염성 질병으로, 조기 발견과 사육 환경 안정화가 치료보다 더 중요하다. 특히 봄철 수온 상승기에는 체표 관찰과 수질 관리 강화가 핵심 예방 전략이다."
+},
+    "뱀장어: 세균성궤양병": {
+  "summary": "주로 Aeromonas spp. 등에 의해 발생하는 세균성 궤양성 질병으로, 장어 체표에 깊은 함몰성 병변과 피부 조직 붕괴를 유발함",
+  "intro": "뱀장어 세균성궤양병은 Aeromonas hydrophila, Aeromonas sobria 등 조건부 병원성 세균에 의해 발생하는 세균성 피부 궤양 질병이다. 외부 기생충에 의한 피부 손상이나 불량한 수질 환경을 계기로 세균이 침입하여 체표 조직이 붕괴되고 깊은 궤양이 형성된다.",
+  "condition": "<ul><li>흡충류, 단생흡충 등 외부 기생충에 의해 피부가 손상된 경우</li><li>유기물 축적, 암모니아 증가 등 불량한 수질이 지속될 때</li><li>사육밀도 과다로 인한 만성 스트레스</li><li>저수온 또는 급격한 수온 변화로 면역력이 저하된 상태</li></ul>",
+  "appearance": "<ul><li>체측 또는 등 부위에 붉고 원형 또는 불규칙한 깊은 궤양 형성</li><li>병변 부위의 피부 조직 붕괴 및 함몰</li><li>병변 주변 비늘 탈락 및 점액 분비 감소</li><li>중증 개체에서 근육 노출 및 2차 감염 동반</li></ul>",
+  "checkup": "✔ <b>육안 검사:</b> 체표의 원형 또는 함몰된 적색 궤양 부위 확인<br>✔ <b>환경 점검:</b> 수질 악화 및 외부 기생충 존재 여부 확인",
+  "treatment": "<b>1. 약욕 치료:</b> 수산용 소독제 또는 염욕(salt bath)을 이용한 2차 감염 억제<br><b>2. 약물 치료:</b> 세균 감수성 시험을 기반으로 한 항생제 혼합사료를 5–7일간 지속 투여<br><b>3. 환경 개선:</b> 수질 개선 및 외부 기생충 동시 구제",
+  "final": "Canker disease는 궤양 부위를 통해 체내로 수분이 유입되면서 삼투압 조절 장애가 발생할 경우 급격한 폐사로 이어질 수 있다. 따라서 초기 병변 단계에서의 신속한 치료와 수질·기생충 관리가 생존율을 좌우하는 핵심 요인이다."
+},
+   "동자개: 세균성 패혈증": {
+  "summary": "Aeromonas spp. 및 Edwardsiella spp. 등 그람음성 병원성 세균에 의해 발생하는 동자개의 급성 전신성 패혈증으로, 전신 출혈과 함께 급격한 폐사를 유발하는 치명적 질병",
+  "intro": "동자개 세균성 패혈증은 주로 Aeromonas hydrophila, Aeromonas veronii, Edwardsiella tarda 등 조건부 병원성 세균에 의해 발생한다. 본 질병은 치어 및 어린 개체에서 특히 감수성이 높으며, 고밀도 사육과 수온 급변으로 인한 스트레스 조건에서 급성으로 진행되어 단기간 내 집단 폐사를 초래할 수 있다.",
+  "condition": "<ul><li>고밀도 사육으로 산소 소비량이 급격히 증가한 환경</li><li>초여름 수온이 단기간에 급상승하는 시기</li><li>저질에 유기물이 축적되어 세균 부하가 높은 경우</li><li>여과 능력 부족 및 용존산소(DO) 저하</li><li>취급·분조·운반 등 물리적 스트레스 직후</li></ul>",
+  "appearance": "<ul><li>복부 하부 전반에 멍이 든 듯한 광범위한 발적 및 점상·반상 출혈</li><li>복부 팽만(distended abdomen) 및 체형 이상</li><li>지느러미 기부와 구강 주변의 출혈 및 발적</li><li>활력 급감, 수면 부상, 짧은 시간 내 급사</li></ul>",
+  "checkup": "✔ <b>외부 관찰:</b> 복부에 멍든 것과 유사한 적자색 출혈 양상 확인<br>✔ <b>환경 점검:</b> 사육밀도, DO, 저질 오염 상태 확인<br>✔ <b>세균 검사:</b> 신장·비장에서 Aeromonas spp. 또는 Edwardsiella spp. 분리 동정",
+  "treatment": "<b>1. 약물 치료:</b> 분리균에 대한 감수성 시험 결과를 기반으로 수산용 항생제 혼합사료를 규정 기간 경구 투여<br><b>2. 환경 조치:</b> 즉각적인 부분 환수, 폭기 강화 및 여과·침전 능력 보강<br><b>3. 위생 관리:</b> 폐사어 즉시 제거, 저질 청소 및 사육 시설·도구 소독",
+  "final": "동자개 세균성 패혈증은 저질에 상재하는 세균이 스트레스 조건에서 급격히 증식하며 발병하는 질병이다. 따라서 저질 청결 유지와 사육밀도 관리가 예방의 핵심이며, 수온 상승기에는 선제적인 수질 관리와 조기 대응이 생존율을 좌우한다."
+},
+   "동자개: 에드워드 감염증": {
+  "summary": "Edwardsiella ictaluri에 의해 발생하는 동자개 치어의 급성 세균성 패혈증으로, 이상 유영과 두부 궤양을 동반하며 급격한 폐사를 유발함",
+  "intro": "본 질병은 Edwardsiella ictaluri 감염에 의해 발생하며, 국내 육상 양어지에서 사육 중인 동자개(Pelteobagrus fulvidraco) 치어에서 관찰되었습니다.",
+  "condition": "<ul><li>수온이 25–30℃ 범위로 상승하는 시기(발병 수온 약 27℃)</li><li>고밀도 사육 및 산소 소비 증가 환경</li><li>저질 유기물 축적 및 여과·환수 능력 부족</li><li>취급·분조 등으로 스트레스가 가중된 경우</li></ul>",
+  "appearance": "<ul><li>수면에서 head-up, tail-down 자세로 매달리며 이상 유영</li><li>두부의 궤양 형성(‘hole in the head’, 현장에서는 ‘총 맞은 병’)</li><li>아가미 창백, 가슴지느러미·꼬리지느러미 기부 출혈</li><li>내부적으로 간 출혈 및 신장 퇴색</li></ul>",
+  "checkup": "✔ <b>외부 관찰:</b> 이상 유영 및 두부 궤양 확인<br>✔ <b>내부 검사:</b> 간·신장 출혈 및 퇴색 여부 확인<br>✔ <b>세균 검사:</b> 신장·간에서 세균 분리 후 PCR로 확진",
+  "treatment": "<b>1. 약물:</b> 감수성 시험 결과에 따른 수산용 항생제 혼합사료 투여<br><b>2. 환경:</b> 즉각적인 환수, 폭기 강화 및 여과 능력 보강<br><b>3. 위생:</b> 폐사어 즉시 제거 및 사육 시설·도구 소독",
+  "final": "장패혈증은 동자개 치어에서 치사율이 매우 높고 진행이 빠르므로, 수온 상승기에는 저질 관리와 사육밀도 조절이 가장 중요한 예방 수단이다."
+}
+,
+   "동자개: 아가미흡충병": {
+  "summary": "단생흡충류(gill flukes)가 아가미에 기생하여 호흡 기능을 저하시켜 폐사를 유발하는 기생충성 질병",
+  "intro": "동자개의 아가미흡충증은 주로 Dactylogyrus spp.와 같은 단생흡충류가 아가미 엽과 새판에 부착·기생하면서 발생하는 질병이다. 기생충의 고정기관(haptor)에 의한 기계적 손상과 과도한 점액 분비로 가스교환이 방해되어 호흡 곤란과 급성 폐사로 진행할 수 있다.",
+  "condition": "<ul><li>유기물 축적이 많고 환수·여과가 불충분한 사육 환경</li><li>고밀도 사육으로 개체 간 전파가 용이한 조건</li><li>외부 종묘 도입 시 검역 없이 입식한 경우</li><li>수온 상승기로 기생충 증식 속도가 증가한 시기</li></ul>",
+  "appearance": "<ul><li>수면 근처에서 헐떡이며 호흡(piping)하는 행동</li><li>아가미뚜껑(operculum)이 약간 열린 상태로 유지</li><li>아가미 점액 과다 분비 및 색조 변화</li><li>중증 시 활력 저하, 섭이 감소 및 급성 폐사</li></ul>",
+  "checkup": "✔ <b>현미경 검사:</b> 아가미 새판 습식 표본에서 갈고리(hook)를 가진 단생흡충의 활발한 운동 확인<br>✔ <b>육안 관찰:</b> 점액 과다 및 아가미 색 변화 확인",
+  "treatment": "<b>1. 약욕 치료:</b> Praziquantel 등 단생흡충에 효과적인 구충제를 적정 농도로 약욕 또는 사료 혼합 투여<br><b>2. 환경 관리:</b> 용존산소 공급 강화 및 환수율 증가<br><b>3. 재발 방지:</b> 필요 시 5–7일 간격으로 반복 처리하여 잔존 개체 제거",
+  "final": "아가미흡충증은 호흡 장애로 빠르게 폐사에 이를 수 있으므로 조기 발견 즉시 구충 처리가 필수적이다. 정기적인 현미경 검진과 수질·사육밀도 관리가 가장 효과적인 예방 전략이다."
+},
+    "동자개: 트리코디나병": {
+  "summary": "섬모충류 Trichodina spp.가 체표와 아가미에 기생하여 점액 과다, 상피 손상 및 호흡 장애를 유발하는 외부기생성 질병",
+  "intro": "동자개의 트리코디나증은 원형의 섬모충 Trichodina spp.가 체표와 아가미 상피에 부착·회전 운동을 하며 기계적 손상을 일으켜 발생한다. 저질 오염과 고밀도 사육 환경에서 흔히 문제되며, 단독 감염보다는 다른 세균성 질병의 선행 요인으로 작용하는 경우가 많다.",
+  "condition": "<ul><li>유기물과 부유물이 많은 저질 환경</li><li>환수 및 여과가 불충분한 사육 조건</li><li>고밀도 사육으로 개체 간 전파가 쉬운 경우</li><li>외부 종묘 도입 시 검역 미흡</li></ul>",
+  "appearance": "<ul><li>체표 점액 과다 분비 및 체색 탁화</li><li>수조 벽·바닥에 몸을 비비는 행동(flashing)</li><li>아가미 점액 증가 및 호흡 곤란</li><li>중증 시 활력 저하, 섭이 감소 및 2차 세균 감염 동반</li></ul>",
+  "checkup": "✔ <b>현미경 검사:</b> 체표 또는 아가미 습식 표본에서 치륜(denticle ring)을 가진 원반형 Trichodina의 회전 운동 확인<br>✔ <b>환경 점검:</b> 저질 오염도 및 환수·여과 상태 확인",
+  "treatment": "<b>1. 약욕 치료:</b> 포르말린 또는 염욕 등 Trichodina에 효과적인 약제를 표준 농도로 처리<br><b>2. 환경 개선:</b> 환수율 증가, 저질 청소 및 여과 능력 보강<br><b>3. 재발 방지:</b> 필요 시 3–5일 간격으로 반복 처리",
+  "final": "트리코디나증은 단독으로도 생산성을 저하시킬 수 있으나, 특히 세균성 질병의 선행 요인으로 작용한다. 저질 관리와 정기적인 현미경 검진이 가장 효과적인 예방 수단이며, 조기 약욕 처리가 피해를 최소화한다."
+},
+    "쏘가리: 이리도바이러스병": {
+      summary: "쏘가리 양식 최대의 난치성 바이러스병으로 이리도바이러스병 (Iridovirus Infection)이라고 합니다.",
+      intro: "여름철 대량 폐사의 주범인 이 질병은 비장이 비대해지는 특징이 있습니다.",
+      condition: "<ul><li>수온 25~30°C의 한여름</li><li>고밀도 사육으로 인한 스트레스 누적 시</li></ul>",
+      appearance: "<ul><li>체색이 검게 변하고 힘없이 떠 있음</li><li>해부 시 비장과 신장이 평소보다 3배 이상 부어 있음</li></ul>",
+      checkup: "✔ <b>해부:</b> 검붉고 비대해진 비장 확인<br>✔ <b>정밀:</b> 수산생물전염병으로 전문 진단 기관에 PCR 검사 의뢰",
+      treatment: "<b>1. 대응:</b> 치료제 없음 (절식 및 수온 하향 유도)<br><b>2. 예방:</b> 종묘 입식 전 바이러스 검사 필수",
+      final: "이리도바이러스병은 치료 불가능하므로 사육 환경 최적화와 스트레스 관리가 예방의 핵심입니다."
+    },
+    "쏘가리: 킬로도넬라병": {
+      summary: "아가미와 피부에 킬로도넬라충(Chilodonella spp.)이 붙어 질식시키는 병",
+      intro: "킬로도넬라충이 점액을 과다 분비시켜 호흡을 방해하여 폐사를 유발하는 병입니다.",
+      condition: "<ul><li>겨울~봄 사이 환절기 수온 변동 시</li><li>바닥에 오염 물질이 많이 쌓였을 때</li></ul>",
+      appearance: "<ul><li>몸 표면에 점액이 많이 분비됨</li><li>수면 위에서 입을 벌리고 헐떡거림</li></ul>",
+      checkup: "✔ <b>현미경:</b> 아가미 등 조직에서 기생충 충체 확인",
+      treatment: "<b>1. 약욕:</b> 수산용 포르말린 약욕<br><b>2. 환경:</b> 수조 청소와 산소 공급 강화",
+      final: "쏘가리는 아가미손상에 의한 산소부족에 민감하여 호흡 곤란이 오기 전 신속하게 약욕을 실시해야 합니다."
+    },
+    "쏘가리: 에로모나스병": {
+      summary: "에로모나스균(Aeromonas spp.)에 의해 피부가 붉게 충혈되는 패혈증",
+      intro: "피부 상처나 면역 저하를 틈타 침입하는 기회감염증입니다.",
+      condition: "<ul><li>선별 및 운반 후 상처가 생겼을 때</li><li>수온 변화가 심하고 수질 오염이 동반될 때</li></ul>",
+      appearance: "<ul><li>피부 전반에 붉은 반점이 생김</li><li>지느러미 기부 출혈 및 복부 팽만</li></ul>",
+      checkup: "✔ <b>육안:</b> 체표의 붉은 발적 유무 확인",
+      treatment: "<b>1. 투약:</b> 수산용 항생제 경구 투여<br><b>2. 환경:</b> 신속한 환수 및 수질 정화",
+      final: "쏘가리는 약제에 민감하므로 정해진 용량을 준수해야 합니다."
+    },
+    "쏘가리: 아가미흡충병": {
+      summary: "아가미 조직에 기생하는 갈고리 모양의 닥틸로자이루스충(Dactylogyrus spp.)이 붙는 기생충병",
+      intro: "흡충 기생충이 아가미를 공격하여 산소 흡수를 방해합니다.",
+      condition: "<ul><li>종묘 도입 초기 및 고밀도 사육 시설</li><li>유기물 함량이 높은 순환 여과조</li></ul>",
+      appearance: "<ul><li>머리를 흔들거나 벽에 비비는 행동</li><li>아가미가 충혈되고 체색이 창백해짐</li></ul>",
+      checkup: "✔ <b>현미경:</b> 아가미 조직에서 갈고리를 가진 흡충 확인",
+      treatment: "<b>1. 약제:</b> 수산용 포르말린 약욕, 프라지콴텔 등 수산용 구충제 경구투여 및 살포<br><b>2. 조치:</b> 충분한 에어레이션(산소 공급) 유지",
+      final: "구충제 살포 시 산소가 부족해지지 않도록 에어 공급을 확대해 주세요."
+    } ,
+
+/* --- 관상어류 데이터 시작 --- */
+    "금붕어: 부레병": {
+      summary: "금붕어가 중심을 잡지 못하고 뒤집히거나 떠오르는 병",
+      intro: "부레의 조절 기능이 상실되어 몸이 뒤집히거나 바닥에 가라앉는 증상입니다. 선천적 요인이나 소화 불량이 주원인입니다.",
+      condition: "<ul><li>고지방 사료를 과다 급이했을 때</li><li>수온이 갑자기 낮아져 소화 능력이 떨어질 때</li><li>체형이 짧고 둥근 개체(진주린 등)에서 빈번</li></ul>",
+      appearance: "<ul><li>물 위로 둥둥 떠서 내려가지 못함</li><li>배를 하늘로 향한 채 뒤집혀 있음</li><li>바닥에 힘없이 가라앉아 움직이지 않음</li></ul>",
+      checkup: "✔ <b>유영 형태:</b> 균형을 잡지 못하고 한쪽으로 기울어지는지 확인",
+      treatment: "<b>1. 절식:</b> 2~3일간 먹이 공급 중단<br><b>2. 온도:</b> 수온을 28℃ 정도로 서서히 상승<br><b>3. 식이요법:</b> 삶은 완두콩 급이로 변비 해소 유도",
+      final: "부레병은 치료보다 먹이 조절과 수온 유지를 통한 예방이 중요합니다."
+    },
+    "금붕어: 안구돌출증": {
+      summary: "눈이 비정상적으로 튀어나오며 충혈되는 병",
+      intro: "세균 감염이나 수질 악화로 인해 눈 뒤쪽에 압력이 생겨 안구가 돌출되는 현상입니다.",
+      condition: "<ul><li>암모니아 및 질산염 농도가 높을 때</li><li>Aeromoans spp., Pseudomonas spp., Mycobacterium spp. 등 세균성 감염 시</li></ul>",
+      appearance: "<ul><li>안구 안쪽의 체액 축적(수종, 염증반응) --> 안압 상승 --> 안구돌출</li><li>눈 주위가 붉게 충혈되거나 하얀 막이 낌</li></ul>",
+      checkup: "✔ <b>육안:</b> 안구의 돌출 정도와 주변 염증 확인",
+      treatment: "<b>1. 환수:</b> 스트레스를 받지 않도록 환수하여 수질 개선<br><b>2. 약욕:</b> 광범위 항생제 처방 및 소금욕(0.5%) 병행",
+      final: "수질 오염이 가장 큰 원인이므로 깨끗한 물 관리가 필수입니다."
+    },
+    "비단잉어: 잉어헤르페스병(KHV)": {
+      summary: "비단잉어 양식에서 가장 경계해야 할 고치사율 잉어헤르페스병(Koi Herpesvirus Disease)",
+      intro: "Cyprinid herpesvirus 3에 의한 질병으로, 전염성이 극도로 강하며 폐사율이 매우 높습니다.",
+      condition: "<ul><li>수온 18~28°C 사이에서 활발히 발생</li><li>신규 개체 도입 시 검역 미비</li></ul>",
+      appearance: "<ul><li>아가미가 괴사하여 하얗게 변하거나 출혈 발생</li><li>피부 점액이 과다 분비되거나 탈락하여 거칠어짐</li><li>함몰된 안구 증상</li></ul>",
+      checkup: "✔ <b>행동:</b> 무기력하게 수면에 떠 있거나 아가미 부식 등 손상 확인<br>✔ <b>신고:</b> 수산생물전염병이므로 의심 시 관계기관에 즉시 신고",
+      treatment: "<b>1. 대응:</b> 치료제 없음 (발생 시 이동제한, 소독 등 방역조치)<br><b>2. 예방:</b> 신규 입식 어류의 철저한 격리 검역",
+      final: "잉어헤르페스병은 치료가 불가능하므로 외부 유입 차단만이 답입니다."
+    },
+    "비단잉어: 코이슬리피병": {
+      summary: "잠을 자는 듯 무기력하게 누워 있는 질병",
+      intro: "CEV 바이러스에 의해 발생하며, 마치 잠자는 것처럼 바닥에 누워 있어 '코이슬리피병(Koi Sleepy Disease)'이라 불립니다.",
+      condition: "<ul><li>수온이 급격히 변하는 봄, 가을 환절기</li><li>환경 스트레스가 극심할 때</li></ul>",
+      appearance: "<ul><li>물고기가 바닥에 옆으로 누워 있음</li><li>사람이 접근해도 반응이 둔함</li><li>아가미가 충혈되고 점액이 많아짐</li></ul>",
+      checkup: "✔ <b>특이행동:</b> 옆으로 누워 있다가 가끔 헤엄치는 동작 반복 확인",
+      treatment: "<b>1. 환경:</b> 소금욕(0.5~0.7%)이 증상 완화에 효과적<br><b>2. 안정:</b> 환수 및 산소 공급 강화",
+      final: "치료제가 없으므로 초기에 소금욕을 실시하면 생존율을 높일 수 있습니다."
+    },
+    "열대어: 칼럼나리스병": {
+      summary: "입과 지느러미가 하얗게 녹는 세균성 질병",
+      intro: "Flavobacterium columnare균에 의해 발생하며, 입 주변이 솜털처럼 변해 '마우스펑거스'라고도 불립니다.",
+      condition: "<ul><li>여과력이 부족하여 유기물이 쌓였을 때</li><li>입식 초기 스트레스로 면역력이 떨어졌을 때</li></ul>",
+      appearance: "<ul><li>입 주변이 하얗게 변하며 헐어 있음</li><li>지느러미 끝이 녹아내리거나 하얀 테두리가 생김</li></ul>",
+      checkup: "✔ <b>육안:</b> 입 주위의 하얀 세균 덩어리 유무 확인",
+      treatment: "<b>1. 약제:</b> 설파제 또는 항생제(옥시테트라사이클린 등) 처방<br><b>2. 청결:</b> 바닥재 청소 및 필터 점검",
+      final: "전염성이 강하므로 증상이 보이면 즉시 격리 치료해야 합니다."
+    },
+    "열대어: 구피배마름병": {
+      summary: "배가 홀쭉하게 마르며 서서히 폐사하는 병",
+      intro: "내부 기생충(Camallanus)이나 결핵균(Mycobacterium)에 의해 영양 흡수를 못 해 발생하는 소모성 질환입니다.",
+      condition: "<ul><li>영양가가 낮거나 오래된 사료를 지속적으로 급이할 때</li><li>오래된 물(질산염 과다)에서 사육할 때</li></ul>",
+      appearance: "<ul><li>배가 홀쭉해지고 몸 전체가 앙상해짐</li><li>등이 굽고 움직임이 눈에 띄게 느려짐</li></ul>",
+      checkup: "✔ <b>체형:</b> 옆모습을 보았을 때 복부 라인이 위로 함몰되었는지 확인",
+      treatment: "<b>1. 구충:</b> 내부 기생충 전용 약제(옴니쿠어산 등) 급이<br><b>2. 영양:</b> 브라인쉬림프, 고단백 생먹이 공급으로 체력 회복",
+      final: "만성화되면 회복이 어려우므로 초기 급이 반응을 잘 살펴야 합니다."
+    },
+
+/* --- 수질 관리 데이터 수정본 --- */
+    "수질: 용존산소(DO)": {
+      q1: "1. 수산생물에게 어떤 역할을 하나요?",
+      q2: "2. 수치가 낮아지는 주요 원인은?",
+      q3: "3. 부족할 때 물고기는 어떤 반응을 보이나요?",
+      summary: "물속에 녹아있는 산소량으로 물고기의 호흡과 생존에 직결되는 지표",
+      intro: "용존산소는 사람의 공기와 같습니다. 수온이 올라가면 산소 녹는 양이 줄어들기 때문에 여름철 고수온기에 가장 주의해야 합니다.",
+      condition: "<ul><li>적정 범위: 7mg/L 이상 유지</li><li>경계 수준: 5mg/L 이하 시 성장저하 등 발생</li><li>위험 수준: 3mg/L 이하 시 폐사 발생</li></ul>",
+      appearance: "<ul><li>수면 위에서 입올림 현상</li><li>활동성이 급격히 떨어지고 사료를 먹지 않음</li></ul>",
+      checkup: "✔ <b>현장 점검:</b> DO 측정기 확인 및 야간/새벽 시간대 집중 모니터링",
+      treatment: "<b>1. 긴급:</b> 수차/에어레이션 최대 가동 및 액체산소도 공급<br><b>2. 완화:</b> 환수를 통해 수온을 낮추고 유기물 부하 감소",
+      final: "DO는 수질관리에 가장 기본적이며 어류 사육의 성패를 결정합니다."
+    },
+    "수질: 암모니아(NH3)": {
+      q1: "1. 암모니아는 왜 위험한가요?",
+      q2: "2. 수치가 오르는 환경적 요인은?",
+      q3: "3. 중독 시 어떤 외관적 변화가 있나요?",
+      summary: "배설물과 사료 찌꺼기에서 발생하는 유독성 오염 물질",
+      intro: "암모니아는 어류의 아가미 점맥을 손상시키고 혈액을 통해 신경계를 마비시킵니다. 특히 pH가 높을수록 비이온화 암모니아로 전환되어 독성이 수십 배 강해집니다.",
+      condition: "<ul><li>원인: 사료 과잉 급이, 여과조 박테리아 활성 저하</li><li>허용치: NH3 0.01mg/L 이하 권장</li></ul>",
+      appearance: "<ul><li>아가미가 충혈되거나 점액이 증가됨</li><li>호흡곤란을 유발하여 무기력한 행동을 함</li></ul>",
+      checkup: "✔ <b>테스트:</b> 암모니아 측정키트 사용 및 사육지 내부 오염물질 잔류 확인",
+      treatment: "<b>1. 즉시:</b> 사료 급이 전면 중단(절식) 및 50% 이상 환수<br><b>2. 조절:</b> pH를 낮추어 암모니아 형태를 독성이 약한 이온화 형태(NH4+)로 유도",
+      final: "수중에 pH와 수온이 상승할때 암모니아 독성을 주의해야 합니다." 
+    },
+    "수질: 아질산(NO2)": {
+      q1: "1. 아질산이 물고기 혈액에 미치는 영향",
+      q2: "2. 여과 시스템에서 왜 발생하나요?",
+      q3: "3. 아가미 색깔은 어떻게 변하나요?",
+      summary: "산소 운반을 방해하여 물고기를 질식시키는 중간 분해 물질",
+      intro: "암모니아가 분해되는 과정에서 생기며, 적혈구의 기능을 마비시켜 '메트헤모글로빈증'을 유발합니다.",
+      condition: "<ul><li>원인: 여과 박테리아(Nitrobacter)의 불균형</li><li>적정치: 0.1mg/L 미만</li></ul>",
+      appearance: "<ul><li>수중에 충분한 산소 공급에도 불구하고 어류는 질식 증상을 보임</li><li>아가미가 선홍색에서 갈색/초콜릿색으로 변함</li></ul>",
+      checkup: "✔ <b>검사:</b> 아질산 시약 테스트로 측정 및 아가미 색상 육안 확인",
+      treatment: "<b>1. 대책:</b> 즉시 환수 조치 실시, 긴급을 요할 경우, 저농도의 소금 투입<br><b>2. 복구:</b> 여과 박테리아제 투입하고, 사료량을 줄임",
+      final: "사료가 과다하게 공급되면 수중에 아질산이 축적되기 쉽다. 따라서 시스템의 아질산 처리능력에 맞추어 사료를 공급해야 합니다."
+    },
+
+   "수질: 수소이온농도(pH)": {
+  q1: "1. pH가 물고기 생리에 미치는 영향",
+  q2: "2. pH 변동의 주요 원인은 무엇인가요?",
+  q3: "3. pH 이상 시 아가미와 체표는 어떻게 변하나요?",
+  summary: "수질의 산성·알칼리성을 나타내는 기본 지표로, 어류 생존과 성장에 직결됨",
+  intro: "pH는 물속의 수소이온 농도를 의미하며, 7을 기준으로 산성·중성·알칼리성을 구분합니다. 안정적인 pH 유지가 어류 건강 관리의 핵심입니다.",
+  condition: "<ul><li>적정 범위: 6.5 ~ 8.5</li><li>경계 수준: 6.0 이하 또는 9.0 이상</li><li>위험 수준: 5.5 이하 또는 9.5 이상</li></ul>",
+  appearance: "<ul><li>산성 환경(pH 낮음): 아가미 점액 과다, 체색 창백</li><li>알칼리성 환경(pH 높음): 체표 손상, 암모니아 독성 강화</li></ul>",
+  checkup: "✔ <b>검사:</b> pH 시험지 또는 전자식 pH 미터로 측정<br>✔ <b>관찰:</b> 어류의 호흡·활동성 변화 확인",
+  treatment: "<b>1. 조절:</b> 산성 시 탄산칼슘·베이킹소다 등 완충제 투입, 알칼리성 시 이탄·산성 완충제 사용<br><b>2. 관리:</b> 환수 시 단계적 조절로 급격한 변동 방지",
+  final: "pH는 수질 관리의 가장 기본 지표로, 안정적인 범위(6.5~8.5) 유지가 어류 건강의 핵심입니다."
+},
+
+    "실무: 환수 전략": {
+      summary: "안전하고 효율적인 물 교체 방법",
+      intro: "수질 오염 물질을 물리적으로 제거하는 가장 확실한 방법이지만, 급격한 수온과 수질 변화는 어류에게 심각한 쇼크를 줍니다.",
+      condition: "<ul><li>정기 환수: 주 1~2회, 전체 물량의 10~20%</li><li>비상 환수: 상황에 따라 50% 이상 수행</li></ul>",
+      appearance: "<ul><li>환수 후 어류가 바닥에 가라앉거나 움직임이 없으면 '환수 쇼크' 의심</li></ul>",
+      checkup: "✔ <b>체크:</b> 보충수의 온도와 기존 수조 온도를 반드시 일치시킬 것",
+      treatment: "<b>1. 온도차:</b> 1도 이내 유지<br><b>2. 염소:</b> 수돗물 사용 시 반드시 염소 제거제(중화제) 사용",
+      final: "환수는 '깨끗한 물'을 넣는 것보다 '안정된 물'을 넣는 것이 더 중요합니다."
+    },
+
+"실무: 여과기 관리": {
+  "summary": "수질 안정과 오염물질 제거를 위한 핵심 장치 관리 지침",
+  "intro": "여과기는 암모니아, 아질산 등 유해 물질을 분해하는 박테리아가 서식하는 공간입니다. 따라서 청결 유지와 박테리아 활성 관리가 수질 안정의 핵심입니다.",
+  "condition": "<ul><li>스펀지·여과재는 2~4주마다 세척 (수조 물 사용)</li><li>모터·임펠러는 1~2개월마다 점검</li><li>여과재는 6개월~1년마다 교체</li></ul>",
+  "appearance": "<ul><li>여과기 수류가 약해지거나 소음이 커지면 청소 필요</li><li>여과재 표면에 점액·찌꺼기 과다 축적 시 박테리아 활성 저하</li></ul>",
+  "checkup": "✔ <b>점검:</b> 유량 감소 여부, 소음 발생 여부, 여과재 표면 상태 확인",
+  "treatment": "<b>1. 청소:</b> 여과재는 수돗물이 아닌 기존 수조 물로 세척<br><b>2. 교체:</b> 여과재는 부분 교체로 박테리아 군집 유지<br><b>3. 유지:</b> 모터·임펠러는 주기적으로 분해 청소",
+  "final": "여과기는 단순한 기계가 아니라 '박테리아의 집'입니다. 청결과 안정성을 동시에 관리해야 수질이 장기적으로 유지됩니다."
+},
+
+"실무: 사료량 조절": {
+  "summary": "어류 건강과 수질 안정을 위한 급이량 관리 지침",
+  "intro": "사료는 어류 성장에 필수적이지만 과다 급이는 수질 악화와 질병 발생의 주요 원인이 됩니다. 적정 급이량을 유지하는 것이 가장 중요한 관리 포인트입니다.",
+  "condition": "<ul><li>일일 급이량: 체중의 2~3% 수준</li><li>급이 횟수: 하루 2~3회, 소량씩 나누어 공급</li><li>사료 잔여물: 5분 내 섭취 가능한 양만 제공</li></ul>",
+  "appearance": "<ul><li>과다 급이 시: 수조 바닥에 사료 찌꺼기 축적, 수질 악화</li><li>급이 부족 시: 어류 체형이 마르고 활동성 저하</li></ul>",
+  "checkup": "✔ <b>체크:</b> 급이 후 5분 내 섭취 여부 확인<br>✔ <b>관찰:</b> 사료 찌꺼기 잔류 여부 및 어류 체형 변화",
+  "treatment": "<b>1. 과다 급이:</b> 즉시 환수 및 여과 강화<br><b>2. 부족 급이:</b> 고단백·고영양 사료 보충<br><b>3. 균형 유지:</b> 성장 단계별 맞춤 사료량 조절",
+  "final": "사료량 조절은 '많이 주는 것'보다 '적정량을 꾸준히 주는 것'이 핵심입니다."
+},
+
+    "실무: 긴급 대응": {
+      summary: "정전, 여과기 고장 등 비상상황 행동 요령",
+      intro: "양식장이나 수조에서 발생하는 돌발 사고 시 피해를 최소화하는 단계별 지침입니다.",
+      condition: "<ul><li>사고 유형: 정전, 산소공급기 중단, 중독 물질 유입</li></ul>",
+      appearance: "<ul><li>집단 폐사 조짐이나 전 개체 수면 부상</li></ul>",
+      checkup: "✔ <b>우선순위:</b> 전원 상태 -> 산소 공급 -> 수온 순으로 점검",
+      treatment: "<b>1단계:</b> 사료 급이 즉시 중단<br><b>2단계:</b> 휴대용 기포기 가동 및 수동 환수<br><b>3단계:</b> 폐사체 즉시 제거(2차 오염 방지)",
+      final: "비상시 가장 먼저 해야 할 행동은 '사료 공급 중단'과 '산소 공급라인 확보'입니다."
+    },
+
+/* --- 수산용의약품 --- */
+   "수산용의약품: 항생제": {
+  "summary": "세균성 질병 치료를 위해 사용하는 의약품",
+  "intro": "항생제는 세균 감염을 억제하거나 사멸시키는 약물로, 수산양식에서 세균성 질병 치료에 사용됩니다. 내성균 발생을 막기 위해 반드시 전문가 처방과 휴약기간 준수가 필요합니다.",
+  "condition": "<ul><li>사용 목적: 세균성 질병 치료</li><li>대표 성분: 옥시테트라사이클린, 암피실린, 플로르페니콜 등</li><li>주의 사항: 휴약기간 준수, 과다·남용 금지</li></ul>",
+  "appearance": "<ul><li>세균 감염 시: 지느러미 붕괴, 궤양, 출혈, 식욕 저하</li><li>항생제 효과: 증상 완화 및 생존율 향상</li></ul>",
+  "checkup": "✔ <b>검사:</b> 질병 발생 시 수산질병관리사 진단<br>✔ <b>확인:</b> 항생제 사용 전후 어류의 증상 변화 관찰",
+  "treatment": "<b>1. 투여:</b> 사료 혼합 급이 또는 수욕 처리<br><b>2. 관리:</b> 휴약기간 준수로 잔류 방지<br><b>3. 예방:</b> 항생제 남용을 피하고, 수질 관리·백신 병행",
+  "final": "항생제는 세균성 질병 치료에 필수적이지만, 내성균 발생을 막기 위해 신중하고 제한적으로 사용해야 합니다."
+},
+
+   "수산용의약품: 항기생충제": {
+  "summary": "내부 및 외부 기생충을 제거하는 의약품",
+  "intro": "항기생충제는 어류의 체내·체외 기생충을 억제하거나 사멸시키는 약물로, 양식장에서 기생충성 질병을 예방·치료하는 데 사용됩니다. 안전성과 휴약기간 준수가 필수입니다.",
+  "condition": "<ul><li>사용 목적: 내부 기생충(예: Camallanus), 외부 기생충(예: Trichodina, Ichthyophthirius) 제거</li><li>대표 성분: 프라지콴텔, 레바미졸, 포르말린, 구리황산염 등</li><li>주의 사항: 휴약기간 준수, 과다 사용 금지</li></ul>",
+  "appearance": "<ul><li>기생충 감염 시: 체표에 흰 반점, 아가미 손상, 체력 저하</li><li>항기생충제 효과: 기생충 탈락 및 증상 완화</li></ul>",
+  "checkup": "✔ <b>검사:</b> 현미경으로 아가미·체표 기생충 확인<br>✔ <b>관찰:</b> 약제 투여 후 기생충 감소 여부 및 어류 활동성 회복 확인",
+  "treatment": "<b>1. 투여:</b> 사료 혼합 급이(내부 기생충) 또는 수욕 처리(외부 기생충)<br><b>2. 관리:</b> 휴약기간 준수로 잔류 방지<br><b>3. 예방:</b> 정기적 기생충 검사 및 수질 관리 병행",
+  "final": "항기생충제는 기생충성 질병 관리에 필수적이지만, 내성·독성 문제를 막기 위해 전문가 지침에 따라 신중하게 사용해야 합니다."
+    },
+
+  "수산용의약품: 항진균제": {
+  "summary": "어류의 곰팡이성 질병 치료를 위한 의약품",
+  "intro": "항진균제는 수산양식에서 곰팡이성 질병(예: 물곰팡이병 등)을 억제하거나 제거하는 약물입니다. 알·치어 단계에서 특히 중요하며, 안전성과 휴약기간 준수가 필수입니다.",
+  "condition": "<ul><li>사용 목적: 곰팡이성 질병 예방 및 치료</li><li>대표 성분: 수산용포르말린, 요오드제 등</li><li>주의 사항: 독성 가능성 있으므로 농도·투여 시간 엄격히 준수</li></ul>",
+  "appearance": "<ul><li>감염 시: 알·치어 표면에 솜털 같은 곰팡이 발생</li><li>항진균제 효과: 곰팡이 제거 및 생존율 향상</li></ul>",
+  "checkup": "✔ <b>검사:</b> 알·치어 표면의 곰팡이 발생 여부 확인<br>✔ <b>관찰:</b> 약제 투여 후 곰팡이 감소 및 생존율 변화 확인",
+  "treatment": "<b>1. 투여:</b> 약욕 처리(수산용포르말린 등) 또는 국소 소독<br><b>2. 관리:</b> 휴약기간 준수 및 농도 초과 사용 금지<br><b>3. 예방:</b> 알 부화기·수조 위생 관리, 수질 안정화",
+  "final": "항진균제는 알과 치어 보호에 필수적이지만, 독성 문제를 막기 위해 전문가 지침에 따라 신중하게 사용해야 합니다."
+},
+
+  "수산용의약품: 소독제": {
+  "summary": "수조 및 기타 양식장 시설의 병원체 제거를 위한 약제",
+  "intro": "소독제는 수조와 양식장 시설에 존재하는 세균, 바이러스, 곰팡이, 기생충 등을 억제하거나 제거하는 약물입니다. 따라서 어류에 직접 닿지 않도록 주의해야 합니다.",
+  "condition": "<ul><li>사용 목적: 수질 위생 관리 및 질병 예방</li><li>대표 성분: 과산화수소, 차아염소산나트륨, 요오드제 등</li><li>주의 사항: 독성 가능성 있으므로 농도·투여 시간 엄격히 준수</li></ul>",
+  "appearance": "<ul><li>소독제 사용 후: 수조 내 부유물 감소, 수질 투명도 향상</li><li>어류에 직접 사용 시: 어류 아가미 손상, 활동성 저하 등 부작용 발생 우려</li></ul>",
+  "checkup": "✔ <b>검사:</b> 소독제 투여 후 수질 변화 확인<br>✔ <b>관찰:</b> 시설 소독 후 입식된 어류의 호흡·활동성 이상 여부 모니터링",
+  "treatment": "<b>1. 투여:</b> 정해진 농도와 시간에 맞춰 수욕 처리<br><b>2. 관리:</b> 소독 후 충분한 환수로 잔류 성분 제거<br><b>3. 예방:</b> 정기적 소독으로 병원체 밀도 억제",
+  "final": "소독제는 질병 예방에 효과적이지만, 독성 문제를 막기 위해 전문가 지침에 따라 신중하게 사용해야 합니다."
+},
+
+  "수산용의약품: 백신": {
+  "summary": "어류 질병 예방을 위한 생물학적 제제",
+  "intro": "백신은 특정 세균이나 바이러스에 대한 면역 반응을 유도하여 질병 발생을 예방하는 생물학적 제제입니다. 양식장에서 집단 면역 확보와 항생제 사용 감소에 중요한 역할을 합니다.",
+  "condition": "<ul><li>사용 목적: 세균성·바이러스성 질병 예방</li><li>대표 종류: 세균성 백신(예: 절창병, 에드워드병), 바이러스성 백신(예: IHN, VHS)</li><li>주의 사항: 접종 시 어류 크기·연령 고려, 접종 후 스트레스 최소화</li></ul>",
+  "appearance": "<ul><li>접종 후: 일시적 활동성 저하, 접종 부위 발적 가능</li><li>효과: 집단 면역 형성, 질병 발생률 감소</li></ul>",
+  "checkup": "✔ <b>검사:</b> 접종 후 일정 기간 면역 반응 확인<br>✔ <b>관찰:</b> 접종 개체의 생존율 및 질병 발생률 모니터링",
+  "treatment": "<b>1. 접종 방법:</b> 주사 접종, 침지 접종, 경구 접종<br><b>2. 관리:</b> 접종 후 수질 안정 유지 및 스트레스 최소화<br><b>3. 예방:</b> 정기적 접종 프로그램 운영",
+  "final": "백신은 질병 예방에 가장 효과적인 수단으로, 항생제 남용을 줄이고 양식장의 지속가능성을 높이는 핵심 전략입니다."
+},
+
+"수산용의약품: 면역증강제·보조제": {
+  "summary": "어류 면역력 강화와 성장·건강 유지에 도움을 주는 보조적 제제",
+  "intro": "면역증강제와 보조제는 어류의 자연 면역 반응을 활성화하고 스트레스 저항성을 높여 질병 예방에 기여합니다. 항생제 남용을 줄이고 양식장의 지속가능성을 높이는 데 중요한 역할을 합니다.",
+  "condition": "<ul><li>사용 목적: 질병 예방, 성장 촉진, 스트레스 완화</li><li>대표 성분: β-글루칸, 알로에 추출물, 비타민 C·E, 아미노산, 미네랄</li><li>주의 사항: 과다 사용 시 효과 감소, 균형 잡힌 급이 필요</li></ul>",
+  "appearance": "<ul><li>투여 후: 어류의 활동성 증가, 체색 개선</li><li>장기적 효과: 질병 발생률 감소, 성장률 향상</li></ul>",
+  "checkup": "✔ <b>검사:</b> 급이 후 섭취율 및 체형 변화 확인<br>✔ <b>관찰:</b> 면역증강제 투여 후 질병 발생률 및 생존율 모니터링",
+  "treatment": "<b>1. 투여:</b> 사료 혼합 급이 또는 수욕 처리<br><b>2. 관리:</b> 성장 단계별 맞춤 보조제 사용<br><b>3. 예방:</b> 정기적 보조제 공급으로 면역력 유지",
+  "final": "면역증강제·보조제는 직접적인 치료제가 아니라 예방적·보조적 수단으로, 수질 관리·백신과 병행할 때 가장 효과적입니다."
+},
+
+"약품투여: 경구투여법": {
+  "summary": "사료에 약제를 혼합하여 어류가 섭취하도록 하는 방법",
+  "intro": "경구투여법은 가장 일반적인 투여 방식으로, 대량 사육 시 효율적입니다. 약제를 사료에 혼합하거나 코팅하여 어류가 자연스럽게 섭취하게 합니다.",
+  "condition": "<ul><li>적용 대상: 세균성 질병, 내부 기생충</li><li>대표 약제: 항생제, 항기생충제</li><li>주의 사항: 섭취율 저하 시 효과 감소</li></ul>",
+  "appearance": "<ul><li>투여 후: 어류가 사료를 잘 먹으면 효과적</li><li>문제 발생: 섭취 거부 시 치료 실패</li></ul>",
+  "checkup": "✔ <b>체크:</b> 급이 후 섭취율 확인<br>✔ <b>관찰:</b> 증상 개선 여부 모니터링",
+  "treatment": "<b>1. 준비:</b> 약제를 사료에 혼합 또는 코팅<br><b>2. 투여:</b> 일정 기간 지속 급이<br><b>3. 관리:</b> 섭취율 저하 시 다른 방법 병행",
+  "final": "경구투여법은 대량 사육에 적합하지만, 섭취율 확보가 핵심입니다."
+},
+
+"약품투여: 약욕법": {
+  "summary": "약제를 물에 희석하여 일정 시간 동안 어류를 담그는 방법",
+  "intro": "약욕법은 외부 기생충·곰팡이성 질병 치료에 효과적입니다. 약제를 일정 농도로 희석한 수조에 어류를 일정 시간 담가 치료합니다.",
+  "condition": "<ul><li>적용 대상: 외부 기생충, 곰팡이성 질병</li><li>대표 약제: 포르말린, 과망간산칼륨, 말라카이트그린</li><li>주의 사항: 농도·시간 엄격히 준수</li></ul>",
+  "appearance": "<ul><li>투여 후: 기생충 탈락, 곰팡이 감소</li><li>문제 발생: 고농도·장시간 노출 시 아가미 손상</li></ul>",
+  "checkup": "✔ <b>체크:</b> 약욕 중 어류의 호흡·활동성 관찰<br>✔ <b>관찰:</b> 치료 후 기생충·곰팡이 감소 여부 확인",
+  "treatment": "<b>1. 준비:</b> 약제를 정해진 농도로 희석<br><b>2. 투여:</b> 어류를 일정 시간 담금<br><b>3. 관리:</b> 약욕 후 깨끗한 물로 환수",
+  "final": "약욕법은 외부 질병 치료에 효과적이지만, 농도와 시간을 철저히 관리해야 합니다."
+},
+
+"약품투여: 주사법": {
+  "summary": "약제를 직접 어류 체내에 주입하는 방법",
+  "intro": "주사법은 개체별 치료가 필요한 경우 사용되며, 정확한 약물 투여가 가능합니다. 주로 백신 접종이나 심각한 세균성 질병 치료에 활용됩니다.",
+  "condition": "<ul><li>적용 대상: 세균성 질병, 백신 접종</li><li>대표 약제: 항생제, 백신</li><li>주의 사항: 숙련된 기술 필요, 스트레스 최소화</li></ul>",
+  "appearance": "<ul><li>투여 후: 일시적 활동성 저하 가능</li><li>효과: 정확한 약물 전달로 치료·예방 효과 높음</li></ul>",
+  "checkup": "✔ <b>체크:</b> 접종 부위 이상 여부 확인<br>✔ <b>관찰:</b> 접종 후 생존율 및 질병 발생률 모니터링",
+  "treatment": "<b>1. 준비:</b> 약제와 주사기 준비<br><b>2. 투여:</b> 개체별 근육 또는 복강 주사<br><b>3. 관리:</b> 접종 후 수질 안정 유지 및 스트레스 최소화",
+  "final": "주사법은 정확성과 효과가 뛰어나지만, 노동력과 기술이 요구됩니다."
+},
+
+
+/* --- 현장검사 시스템 데이터 시작 --- */
+
+"검사: 사육실태 점검": {
+  q1: "1. 어떤 검사인가요?",
+  q2: "2. 검사 시 주의사항은?",
+  q3: "3. 결과 해석 방법은?",
+  summary: "양식장의 어류 사육 환경과 관리 상태를 종합적으로 평가하는 조사",
+  intro: "사육실태 점검은 수질, 사료, 질병, 성장률 등을 종합적으로 확인하여 문제를 파악하고 개선 방향을 제시합니다.",
+  condition: "<ul><li>조사 대상: 어류, 수질, 사료, 의약품 사용 현황</li><li>조사 주기: 분기별 또는 필요 시</li></ul>",
+  appearance: "<ul><li>양호: 활동성 정상, 성장률 안정, 질병 발생률 낮음</li><li>문제: 폐사율 증가, 성장 부진, 질병 다발</li></ul>",
+  checkup: "✔ <b>방법:</b> 수질검사, 사료 사용량 기록, 어류 행동·체형 관찰",
+  treatment: "<b>조치:</b> 수질 관리 강화, 사료량 조절, 질병 예방 프로그램 운영",
+  final: "사육실태 점검은 양식장의 지속가능성과 생산성을 높이는 핵심 관리 도구입니다."
+},
+
+"검사: 현미경 검사": {
+  q1: "1. 어떤 검사인가요?",
+  q2: "2. 검사 시 주의사항은?",
+  q3: "3. 결과 해석 방법은?",
+  summary: "어류 체표·아가미·내장 조직을 현미경으로 관찰하여 기생충·세균·곰팡이 여부를 확인하는 검사",
+  intro: "현미경 검사는 기생충이나 병원체를 직접 확인할 수 있는 가장 기본적이고 신뢰성 있는 진단 방법입니다.",
+  condition: "<ul><li>검사 대상: 아가미, 체표 점액, 내장 조직</li><li>준비물: 현미경, 슬라이드, 커버글라스</li></ul>",
+  appearance: "<ul><li>기생충: 움직이는 원충, 흰 반점</li><li>곰팡이: 솜털 모양 균사</li><li>세균: 세포 내 집적 관찰</li></ul>",
+  checkup: "✔ <b>방법:</b> 조직 샘플을 슬라이드에 올려 현미경으로 관찰",
+  treatment: "<b>조치:</b> 기생충 발견 시 항기생충제 투여, 곰팡이 발견 시 항진균제 사용",
+  final: "현미경 검사는 질병 원인을 직접 확인하는 1차 진단 도구입니다."
+},
+
+"검사: 수질검사": {
+  q1: "1. 어떤 검사인가요?",
+  q2: "2. 검사 시 주의사항은?",
+  q3: "3. 결과 해석 방법은?",
+  summary: "pH, 용존산소, 암모니아, 아질산 등 주요 수질 지표를 측정하는 검사",
+  intro: "수질검사는 어류 생존과 성장에 직접적인 영향을 주는 환경 지표를 확인하는 과정입니다.",
+  condition: "<ul><li>검사 항목: pH, DO, NH₃/NH₄⁺, NO₂⁻</li><li>측정 주기: 매일 또는 주 2~3회</li></ul>",
+  appearance: "<ul><li>양호: pH 6.5~8.5, DO 5mg/L 이상</li><li>문제: 암모니아·아질산 상승 시 폐사 위험</li></ul>",
+  checkup: "✔ <b>방법:</b> 시험지, 전자 센서, 화학적 적정법으로 수질 지표 측정",
+  treatment: "<b>조치:</b> 환수, 여과 강화, 사료량 조절, 산소 공급",
+  final: "수질검사는 어류 건강을 지키는 가장 기본적이고 필수적인 관리 항목입니다."
+},
+
+    "검사: 신속진단키트(LFT)": {
+      q1: "1. 어떤 검사인가요?",
+      q2: "2. 검사 시 주의사항은?",
+      q3: "3. 결과 해석 방법은?",
+      summary: "항원-항체 반응을 이용해 15분 내외로 질병을 확인하는 간이 검사",
+      intro: "코로나 자가진단키트와 유사한 원리로, 현장에서 즉시 특정 바이러스나 세균 감염 여부를 확인합니다.",
+      condition: "<ul><li>검사 대상: VHS, IHN, 이리도바이러스 등 주요 바이러스</li><li>준비물: 키트, 면봉, 완충액(Buffer)</li></ul>",
+      appearance: "<ul><li>C라인(대조선): 항상 나타나야 함 (안 나타나면 무효)</li><li>T라인(결과선): 나타나면 양성(감염), 안 나타나면 음성</li></ul>",
+      checkup: "✔ <b>방법:</b> 아가미나 내장 조직을 소량 채취하여 완충액과 섞은 후 키트에 점적",
+      treatment: "<b>주의:</b> 간이 검사이므로 양성 반응 시 반드시 전문 기관에 정밀 검사(PCR) 의뢰 필요",
+      final: "신속한 격리 결정을 위한 1차 방어선입니다."
+    },
+    "검사: 샘플 채취 및 보존": {
+      q1: "1. 왜 중요한가요?",
+      q2: "2. 어떻게 채취하나요?",
+      q3: "3. 보존 및 운송 방법은?",
+      summary: "정확한 진단을 위해 신선한 상태로 실험실까지 전달하는 기술",
+      intro: "샘플이 부패하거나 오염되면 원인균을 찾을 수 없습니다. 올바른 채취와 고정이 진단의 시작입니다.",
+      condition: "<ul><li>필수 도구: 멸균 튜브, 알코올, 70% 에탄올 또는 포르말린</li><li>대상: 아가미, 신장, 비장, 병변 부위</li></ul>",
+      appearance: "<ul><li>생존 개체 또는 폐사 직후의 개체를 샘플링하는 것이 가장 정확함</li></ul>",
+      checkup: "✔ <b>방법:</b> 외부 소독 후 멸균 기구로 장기 채취 -> 고정액 투입 -> 냉장 보관",
+      treatment: "<b>팁:</b> 바이러스 검사용은 냉장(-4℃), 조직 검사용은 고정액(포르말린) 보관",
+      final: "오염된 샘플은 잘못된 처방을 부릅니다."
+    },
+    "검사: 소독 프로토콜": {
+      q1: "1. 소독의 목적",
+      q2: "2. 주요 소독제 종류",
+      q3: "3. 현장 적용 방법",
+      summary: "외부 병원균의 유입 차단 및 장비 간 교차 오염 방지",
+      intro: "사람의 장화, 그물, 차량 등을 통해 병이 옮겨지지 않도록 철저히 차단하는 과정입니다.",
+      condition: "<ul><li>소독 대상: 사육 도구, 장화, 수조 입구, 차량 바퀴</li></ul>",
+      appearance: "<ul><li>사용 가능한 소독제: 이산화염소, 요오드제, 생석회 등</li></ul>",
+      checkup: "✔ <b>실무:</b> 발판 소독조의 소독액은 최소 2~3일마다 교체하여 농도 유지",
+      treatment: "<b>단계:</b> 오물 제거(세척) -> 소독제 살포 -> 충분한 반응 시간 유지 -> 건조",
+      final: "세척 없는 소독은 효과가 절반으로 줄어듭니다."
+    },
+    "검사: 법정전염병 신고": {
+      q1: "1. 신고 대상은?",
+      q2: "2. 신고 절차는 어떻게 되나요?",
+      q3: "3. 미신고 시 불이익",
+      summary: "수산생물질병 관리법에 따른 의무 신고 절차",
+      intro: "IHN, SVC, KHV 등 법정 전염병 의심 개체 발견 시 확산 방지를 위해 즉시 관계기관에 알려야 합니다.",
+      condition: "<ul><li>신고 기관: 국립수산물품질관리원 또는 시·도 수산연구소</li></ul>",
+      appearance: "<ul><li>대량 폐사 발생 시 혹은 특이 증상(안구 돌출, 괴사 등) 관찰 시</li></ul>",
+      checkup: "✔ <b>절차:</b> 발견 즉시 전화 신고 -> 현장 보존 -> 전문가 방문 조사 협조",
+      treatment: "<b>참고:</b> 조기 신고 시 보상금 지급 대상이 될 수 있으나, 은폐 시 과태료가 부과됨",
+      final: "신속한 신고가 우리의 양식산업을 살리는 길입니다."
+    },
+/* --- 현장사례 데이터 시작 --- */
+    "사례: 메기 에드워드병 조기진단": {
+      q1: "1. 어떤 상황이었나요?",
+      q2: "2. 어떻게 대응했나요?",
+      q3: "3. 결과와 교훈은?",
+      summary: "머리 구멍 증상 전, 먹이 반응 저하만으로 에드워드병을 잡아낸 사례",
+      intro: "경북의 한 메기 양식장에서 수온 26도 도달 시점에 전 개체의 먹이 활동이 평소보다 20% 감소한 것을 포착했습니다.",
+      condition: "<ul><li>증상: 외견상 구멍은 없으나 유영 속도가 느려짐</li><li>조치: 즉시 샘플 채취 후 신속진단키트 검사 실시</li></ul>",
+      appearance: "<ul><li>키트 검사 결과: 에드워드균(E. ictaluri) 양성 확인</li></ul>",
+      checkup: "✔ <b>핵심:</b> 육안 증상이 나타나기 전 '먹이 섭취량 변화'를 데이터로 감지함",
+      treatment: "<b>대응:</b> 확인 즉시 사료 급이량을 50% 줄이고 감수성 항생제 5일간 투여",
+      final: "질병 치료는 '눈'보다 '데이터(먹이량)'가 빠를 때 성공률이 높습니다."
+    },
+/* --- 수질 사고 사례 상세 --- */
+    "사례: 고수온기 산소 부족 대응": {
+      q1: "1. 사고 발생 상황은?",
+      q2: "2. 긴급 조치 사항은?",
+      q3: "3. 재발 방지 대책은?",
+      summary: "한여름 폭염으로 수온이 29도까지 상승하며 야간 산소 부족으로 전멸 위기였던 사례",
+      intro: "8월 중순 새벽 2시경, 수온 상승으로 인해 용존산소(DO) 수치가 급락(2.0mg/L 이하)하며 물고기들이 수면에서 뻐끔거리는 '들뜸 현상' 발생.",
+      condition: "<ul><li>현상: 개체들이 활력을 잃고 수면으로 집중됨</li><li>위험: 방치 시 1~2시간 내 대량 폐사 확정</li></ul>",
+      appearance: "<ul><li>원인: 고수온으로 인한 산소 용해도 감소 + 야간 조류의 호흡 작용</li></ul>",
+      checkup: "✔ <b>응급조치:</b> 즉시 급이를 중단하고, 액체 산소 투입 및 수차/에어레이션 풀가동",
+      treatment: "<b>대응:</b> 지하수(저온수) 대량 유입으로 수온을 1.5도 강제 하락시키고 산소 공급 유지",
+      final: "고수온기에는 '야간 산소 모니터링'이 필수이며, 비상용 액체 산소통 비치가 생사를 가릅니다."
+    },
+
+    "사례: RAS 아질산 수치 폭등 해결": {
+      q1: "1. 사고 발생 상황은?",
+      q2: "2. 긴급 조치 사항은?",
+      q3: "3. 재발 방지 대책은?",
+      summary: "순환여과식(RAS) 시스템에서 여과조 박테리아 사멸로 아질산이 폭등한 사례",
+      intro: "대량 환수 시 온도 조절 실패로 여과조 미생물이 쇼크를 받아 아질산(NO2)이 2.5mg/L(치사량 수준)까지 도달했습니다.",
+      condition: "<ul><li>현상: 물고기들이 힘없이 유영하며 아가미가 갈색(초콜릿색)으로 변함</li></ul>",
+      appearance: "<ul><li>원인: 급격한 환경 변화에 따른 여과조 바이오필름 탈락</li></ul>",
+      checkup: "✔ <b>독성 중화:</b> 천일염을 즉시 투입(0.3~0.5% 농도)하여 아질산의 혈액 내 침투 차단",
+      treatment: "<b>대응:</b> 사료 공급을 즉시 중단(절식)하고 고성능 박테리아제를 투입하여 여과조 복구",
+      final: "아질산 폭등 시 '소금(염분) 투입'은 메트헤모글로빈 혈증을 막아 폐사를 방지하는 가장 빠른 방법입니다."
+    },
+    "사례: RAS 아질산 수치 폭등 해결": {
+      q1: "1. 어떤 상황이었나요?",
+      q2: "2. 어떻게 대응했나요?",
+      q3: "3. 결과와 교훈은?",
+      summary: "순환여과식(RAS) 시스템에서 여과조 마비로 아질산이 치솟은 상황",
+      intro: "대량 환수 직후 여과 박테리아가 충격을 받아 아질산 수치가 2.0mg/L 이상(정상 0.1)으로 폭등했습니다.",
+      condition: "<ul><li>현상: 물고기들이 수면 근처에서 정지하고 아가미가 갈색으로 변함</li></ul>",
+      appearance: "<ul><li>원인: 새 물 투입 시 온도 차이로 인한 여과조 미생물 사멸</li></ul>",
+      checkup: "✔ <b>응급조치:</b> 천일염을 0.3% 농도로 즉시 투입하여 아질산 독성 차단",
+      treatment: "<b>대응:</b> 고성능 박테리아제 대량 투입 및 3일간 무급이(절식) 유지",
+      final: "여과조 마비 시 '소금 투입'은 물고기의 질식을 막는 가장 과학적인 응급처치입니다."
+    },
+    "사례: 송어 IHN 확산 방지": {
+      q1: "1. 어떤 상황이었나요?",
+      q2: "2. 어떻게 대응했나요?",
+      q3: "3. 결과와 교훈은?",
+      summary: "인근 양식장에서 IHN 발생 시 철저한 차단 방역으로 피해를 막은 사례",
+      intro: "상류 양식장에서 IHN이 발생했다는 소식을 듣고 즉시 외부인 출입 통제 및 소독 강화를 실시했습니다.",
+      condition: "<ul><li>조치: 공용 그물 사용 중단, 장화 소독조 농도 2배 강화</li></ul>",
+      appearance: "<ul><li>결과: 주변 농가는 50% 이상 폐사했으나 본 양식장은 무사히 방어</li></ul>",
+      checkup: "✔ <b>핵심:</b> 정보 공유 즉시 '내 양식장만이라도' 철저히 격리함",
+      treatment: "<b>대응:</b> 유입수 소독 장치(UV) 가동 및 개체 스트레스 방지를 위한 핸들링 최소화",
+      final: "바이러스는 치료약이 없으므로 '정보력'과 '차단'만이 살길입니다."
+    } //
+}; //
+
+  // 4. 모달창 열기 함수
+ function openInfo(title) {
+  const info = diseaseData[title];
+  const modal = document.getElementById('detail-modal');
+  const content = document.getElementById('modal-content');
+
+  if (!info) {
+    alert("상세 정보 데이터가 없습니다.");
+    return;
+  }
+
+  modal.style.display = 'flex';
+  content.innerHTML = `
+    <h2 style="color:var(--primary-navy); border-bottom:3px solid var(--gold); padding-bottom:10px; margin-bottom:20px;">${title}</h2>
+    
+    <div style="text-align:left; max-height: 65vh; overflow-y: auto; padding-right: 10px;">
+      <div style="background:#eef2f7; padding:15px; border-radius:8px; margin-bottom:20px;">
+        <strong style="color:var(--accent-blue);">💡 핵심 요약</strong>
+        <p style="margin:5px 0 0 0; font-weight:600;">"${info.summary}"</p>
+      </div>
+
+      <p><strong>${info.q1 || "1. 어떤 내용인가요?"}</strong><br>${info.intro}</p>
+      <p><strong>${info.q2 || "2. 발생 조건 및 주의사항"}</strong>${info.condition}</p>
+      <p><strong>${info.q3 || "3. 주요 확인 사항"}</strong>${info.appearance || info.symptoms || "정보 없음"}</p>
+      
+      <div style="border:1px solid #ddd; padding:15px; border-radius:8px; margin-bottom:15px; background:#fafafa;">
+        <strong>4. 현장 점검 및 진단 방법</strong><br>
+        <p style="margin:5px 0 0 0; font-size:0.9rem; line-height:1.6;">${info.checkup}</p>
+      </div>
+
+      <p><strong>5. 대응 지침 및 처방</strong><br>
+        <span style="display:block; background:#fff4f4; padding:12px; border-left:4px solid #ff4d4d; font-size:0.9rem; line-height:1.6;">
+          ${info.treatment}
+        </span>
+      </p>
+
+      <div style="background:var(--primary-navy); color:white; padding:15px; border-radius:8px; margin-top:20px; text-align:center;">
+        <strong>💡 전문가 한마디</strong><br>
+        <span style="color:var(--gold); font-weight:bold;">${info.final}</span>
+      </div>
+    </div>
+  `;
+}
+
+  // 5. 모달창 닫기 함수
+  function closeInfo() {
+    document.getElementById('detail-modal').style.display = 'none';
+  }
+
+  // 외부 영역 클릭 시 닫기
+  window.onclick = function(e) {
+    if (e.target.id === 'detail-modal') closeInfo();
+  }
+</script>
+
